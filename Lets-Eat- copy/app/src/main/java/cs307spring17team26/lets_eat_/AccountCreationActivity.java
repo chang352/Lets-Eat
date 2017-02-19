@@ -47,6 +47,7 @@ public class AccountCreationActivity extends AppCompatActivity {
     private TextView emailTextView;
     private TextView passwordTextView;
     private TextView reenterTextView;
+    private TextView existingAccountTextView;
     private Button createAccountButton;
 
     //shows the keyboard
@@ -60,13 +61,6 @@ public class AccountCreationActivity extends AppCompatActivity {
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
     }
-
-    /*public boolean onEditorAction(EditText v, int actionId, KeyEvent event) {
-        if (actionId==EditorInfo.IME_ACTION_DONE) {
-
-        }
-        return false;
-    }*/
 
     //checks if password has at least 5 characters, 1 capital letters, and 1 number
     public boolean isLegalPassword(String input) {
@@ -101,6 +95,7 @@ public class AccountCreationActivity extends AppCompatActivity {
         emailTextEdit = (EditText)findViewById(R.id.emailEditText);
         passwordTextEdit = (EditText)findViewById(R.id.passwordEditText);
         reenterTextEdit = (EditText)findViewById(R.id.reenterPasswordEditText);
+        existingAccountTextView = (TextView)findViewById(R.id.existingAccountTextView);
         createAccountButton = (Button)findViewById(R.id.createAccountButton);
 
         //when user touches textEdit, keyboard will appear
@@ -123,10 +118,21 @@ public class AccountCreationActivity extends AppCompatActivity {
             }
         });
 
+        //if user has existing account, goes back to login account UI activity, login UI is main page
+        existingAccountTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Intent intent = new Intent(this, LoginAccountActivity.class);
+                //startActivity(intent);
+                finish();
+            }
+        });
+
+        //when user clicks the create account button
         createAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
+                //try {
                     String emailInput = emailTextEdit.getText().toString(); //user input for email
                     String passwordInput = passwordTextEdit.getText().toString();
                     String reenterInput = reenterTextEdit.getText().toString();
@@ -142,9 +148,13 @@ public class AccountCreationActivity extends AppCompatActivity {
                     else if (reenterInput==null || !passwordInput.equals(reenterInput)) {
                         popupActivity("reenterInput");
                     }
-                } catch(Exception e) {
-
-                }
+                else { //data stored in database, go to login account UI page
+                        //Intent intent = new Intent(this, InvalidEmailPopupActivity.class);
+                        //startActivity(intent);
+                        finish();
+                    }
+                //} catch(Exception e) {
+                //}
             }
         });
 
