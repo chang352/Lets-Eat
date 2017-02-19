@@ -3,4 +3,12 @@
 
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="title_activity_invalid_account_popup">InvalidAccountPopupActivity</string>
+
+    <string name="title_activity_invalid_email_popup">InvalidEmailPopupActivity</string>
+
+    <string name="title_activity_invalid_password">InvalidPasswordActivity</string>
+
+    <string name="title_activity_password_dont_match">PasswordDontMatchActivity</string>
 </resources>

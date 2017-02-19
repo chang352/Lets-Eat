@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.*;
 import android.view.inputmethod.*;
 import android.content.Context;
+import android.content.Intent;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -46,11 +47,49 @@ public class AccountCreationActivity extends AppCompatActivity {
     private TextView emailTextView;
     private TextView passwordTextView;
     private TextView reenterTextView;
+    private Button createAccountButton;
+
+    //shows the keyboard
+    public void showSoftKeyboard(TextView textView) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(textView, InputMethodManager.SHOW_IMPLICIT);
+    }
 
     //hides the keyboard
     public void hideSoftKeyboard(TextView textView) {
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
+    }
+
+    /*public boolean onEditorAction(EditText v, int actionId, KeyEvent event) {
+        if (actionId==EditorInfo.IME_ACTION_DONE) {
+
+        }
+        return false;
+    }*/
+
+    //checks if password has at least 5 characters, 1 capital letters, and 1 number
+    public boolean isLegalPassword(String input) {
+        if (input.length()<=5) return false; //length at least 5 characters
+        if (!input.matches(".*[A-Z].*")) return false; //need at least 1 capital letter
+        if (!input.matches(".*\\d+.*")) return false; //need at least 1 number
+        return true;
+    }
+
+    //goes to different activity to show popup message of error
+    private void popupActivity(String textEdit) {
+        if (textEdit.equals("emailInput")) { //invalid email popup
+            Intent intent = new Intent(this, InvalidEmailPopupActivity.class);
+            startActivity(intent);
+        }
+        else if (textEdit.equals("passwordInput")) { //invalid password popup
+            Intent intent = new Intent(this, InvalidPasswordActivity.class);
+            startActivity(intent);
+        }
+        else if (textEdit.equals("reenterInput")) { //passwords don't match popup
+            Intent intent = new Intent(this, PasswordDontMatchActivity.class);
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -62,26 +101,50 @@ public class AccountCreationActivity extends AppCompatActivity {
         emailTextEdit = (EditText)findViewById(R.id.emailEditText);
         passwordTextEdit = (EditText)findViewById(R.id.passwordEditText);
         reenterTextEdit = (EditText)findViewById(R.id.reenterPasswordEditText);
+        createAccountButton = (Button)findViewById(R.id.createAccountButton);
+
         //when user touches textEdit, keyboard will appear
         emailTextEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(emailTextEdit, InputMethodManager.SHOW_IMPLICIT);
+                showSoftKeyboard(emailTextEdit);
             }
         });
         passwordTextEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(passwordTextEdit, InputMethodManager.SHOW_IMPLICIT);
+                showSoftKeyboard(passwordTextEdit);
             }
         });
         reenterTextEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(reenterTextEdit, InputMethodManager.SHOW_IMPLICIT);
+                showSoftKeyboard(reenterTextEdit);
+            }
+        });
+
+        createAccountButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    String emailInput = emailTextEdit.getText().toString(); //user input for email
+                    String passwordInput = passwordTextEdit.getText().toString();
+                    String reenterInput = reenterTextEdit.getText().toString();
+                    //if user doesn't give valid email or is empty
+                    if (emailInput==null || !android.util.Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()) {
+                        popupActivity("emailInput");
+                    }
+                    //if password is not has at least 5 characters, 1 capital letter, or 1 number, or is empty
+                    else if (passwordInput==null || !isLegalPassword(passwordInput)) {
+                        popupActivity("passwordInput");
+                    }
+                    //else if email already used, or is empty
+                    else if (reenterInput==null || !passwordInput.equals(reenterInput)) {
+                        popupActivity("reenterInput");
+                    }
+                } catch(Exception e) {
+
+                }
             }
         });
 

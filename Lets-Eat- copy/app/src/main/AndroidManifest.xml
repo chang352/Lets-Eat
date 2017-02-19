@@ -12,14 +12,29 @@
             android:name=".AccountCreationActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
-            android:theme="@style/FullscreenTheme"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/FullscreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".InvalidEmailPopupActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_invalid_email_popup"
+            android:theme="@style/FullscreenTheme" />
+        <activity
+            android:name=".InvalidPasswordActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_invalid_password"
+            android:theme="@style/FullscreenTheme" />
+        <activity
+            android:name=".PasswordDontMatchActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_password_dont_match"
+            android:theme="@style/FullscreenTheme"></activity>
     </application>
 
 </manifest>
