@@ -19,7 +19,8 @@
         android:id="@+id/textView4"
         android:background="#93c580"
         android:textSize="70sp"
-        android:paddingLeft="5sp" />
+        android:paddingLeft="5sp"
+        android:textColor="#ff6961" />
 
     <ScrollView
         android:id="@+id/login_form"
@@ -83,12 +84,12 @@
                 android:layout_marginLeft="50dp" />
 
             <TextView
-                android:text="Already have an account?"
+                android:text="Don't have an account?"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/existingAccountTextView"
+                android:id="@+id/newAccountTextView"
                 android:layout_marginTop="15dp"
-                android:layout_marginLeft="70dp"
+                android:layout_marginLeft="75dp"
                 android:textColor="#ffffff" />
 
             <TextView

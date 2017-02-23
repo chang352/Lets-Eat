@@ -45,7 +45,7 @@
             android:background="#696969"
             android:layout_height="150dp"
             android:layout_width="250dp"
-            android:layout_marginLeft="65dp"
+            android:layout_marginLeft="60dp"
             android:layout_marginRight="65dp"
             android:layout_marginTop="175dp"
             android:textSize="30sp"

@@ -25,4 +25,9 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="title_activity_profile__potential__match_">Profile_Potential_Match_Activity
+    </string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_application">ApplicationActivity</string>
 </resources>

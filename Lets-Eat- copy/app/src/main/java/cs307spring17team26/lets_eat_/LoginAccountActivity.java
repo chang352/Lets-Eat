@@ -62,7 +62,8 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
     private EditText passwordEditText;
     private View mProgressView;
     private View mLoginFormView;
-    private TextView existingAccountTextView;
+    private TextView forgotPasswordTextView;
+    private TextView newAccountTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,8 +93,18 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
             }
         });
 
-        existingAccountTextView = (TextView) findViewById(R.id.existingAccountTextView);
-        existingAccountTextView.setOnClickListener(new View.OnClickListener() {
+        //if user forgets password
+        forgotPasswordTextView = (TextView)findViewById(R.id.forgotPasswordTextView);
+        forgotPasswordTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        //if user doesn't have existing account
+        newAccountTextView = (TextView) findViewById(R.id.newAccountTextView);
+        newAccountTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginAccountActivity.this, AccountCreationActivity.class);
