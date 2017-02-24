@@ -23,25 +23,30 @@
             android:name=".InvalidEmailPopupActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="Invalid Email"
+            android:screenOrientation="portrait"
             android:theme="@style/FullscreenTheme" />
         <activity
             android:name=".InvalidPasswordActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="Invalid Password"
+            android:screenOrientation="portrait"
             android:theme="@style/FullscreenTheme" />
         <activity
             android:name=".PasswordDontMatchActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="Passwords Don&apos;t Match"
+            android:screenOrientation="portrait"
             android:theme="@style/FullscreenTheme" />
         <activity
             android:name=".LoginAccountActivity"
+            android:screenOrientation="portrait"
             android:label="Login">
 
         </activity>
         <activity
             android:name=".ApplicationActivity"
             android:label="Let's Eat!"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
