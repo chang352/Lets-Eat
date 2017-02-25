@@ -9,11 +9,26 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.SearchView;
 
 public class TabMatchesFragment extends Fragment {
+
+    public TabMatchesFragment() {}
+
+    private ListView matchesListView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab_matches, container, false);
+        SearchView searchBarSearchView = (SearchView)rootView.findViewById(R.id.searchBarSearchView); // initialize a search view
+        CharSequence query = searchBarSearchView.getQuery(); // get the query string currently in the text field
+        String name = "Name";
+        String[] info = {name, "Age", "Location", "Gender", "Favorite Cuisine", "Occupation", "\nHi\nHi\nHi\nHi\nHi\nHi\nHi\nHi\nHi\n"};
+        matchesListView = (ListView)rootView.findViewById(R.id.matchesListView);
+        ArrayAdapter<String> infoListViewAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, info);
+        matchesListView.setAdapter(infoListViewAdapter);
         return rootView;
     }
 }

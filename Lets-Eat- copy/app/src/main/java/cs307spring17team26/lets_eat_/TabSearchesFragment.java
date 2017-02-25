@@ -22,7 +22,7 @@ public class TabSearchesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab_searches, container, false);
         String name = "Bob Smith";
-        String[] info = {name, "MJ", "Mary Jane"};
+        String[] info = {name, "MJ", "Nathan Chang"};
         searchesListView = (ListView)rootView.findViewById(R.id.searchesListView);
         ArrayAdapter<String> searchesListViewAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, info);
         searchesListView.setAdapter(searchesListViewAdapter);

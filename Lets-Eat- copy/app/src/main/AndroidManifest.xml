@@ -18,13 +18,15 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="Account Creation"
             android:screenOrientation="portrait"
-            android:theme="@style/FullscreenTheme" />
+            android:theme="@style/FullscreenTheme" >
+        </activity>
         <activity
             android:name=".InvalidEmailPopupActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="Invalid Email"
             android:screenOrientation="portrait"
-            android:theme="@style/FullscreenTheme" />
+            android:theme="@style/FullscreenTheme">
+        </activity>
         <activity
             android:name=".InvalidPasswordActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -41,7 +43,11 @@
             android:name=".LoginAccountActivity"
             android:screenOrientation="portrait"
             android:label="Login">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".ApplicationActivity"

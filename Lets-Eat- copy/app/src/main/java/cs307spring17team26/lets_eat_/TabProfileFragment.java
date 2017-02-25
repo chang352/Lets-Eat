@@ -22,7 +22,7 @@ public class TabProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab_profile, container, false);
         String name = "Name";
-        String[] info = {name, "Age", "Location", "Gender", "Favorite Cuisine", "Occupation", "\nI believe in \nthe Five Ideals of Alpha Kappa Lambda Fraternity \nand subscribe to an emphasis on \nJudeo-Christian Principles, \nLeadership, \nScholarship, \nLoyalty, and \nSelf-Support.\n"};
+        String[] info = {name, "Age", "Location", "Gender", "Favorite Cuisine", "Occupation", "\nHi\nHi\nHi\nHi\nHi\nHi\nHi\nHi\nHi\n"};
         infoListView = (ListView)rootView.findViewById(R.id.infoListView);
         ArrayAdapter<String> infoListViewAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, info);
         infoListView.setAdapter(infoListViewAdapter);

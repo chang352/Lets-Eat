@@ -11,6 +11,7 @@ import android.widget.*;
 import android.view.inputmethod.*;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -42,25 +43,8 @@ public class AccountCreationActivity extends AppCompatActivity {
     private EditText emailTextEdit;
     private EditText passwordTextEdit;
     private EditText reenterTextEdit;
-    private TextView createAccountTextView;
-    private TextView backgroundTextView;
-    private TextView emailTextView;
-    private TextView passwordTextView;
-    private TextView reenterTextView;
     private TextView existingAccountTextView;
     private Button createAccountButton;
-
-    //shows the keyboard
-    public void showSoftKeyboard(TextView textView) {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(textView, InputMethodManager.SHOW_IMPLICIT);
-    }
-
-    //hides the keyboard
-    public void hideSoftKeyboard(TextView textView) {
-        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
-    }
 
     //checks if password has at least 5 characters, 1 capital letters, and 1 number
     public boolean isLegalPassword(String input) {
@@ -99,7 +83,7 @@ public class AccountCreationActivity extends AppCompatActivity {
         createAccountButton = (Button)findViewById(R.id.createAccountButton);
 
         //when user touches textEdit, keyboard will appear
-        emailTextEdit.setOnClickListener(new View.OnClickListener() {
+        /*emailTextEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showSoftKeyboard(emailTextEdit);
@@ -116,7 +100,7 @@ public class AccountCreationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 showSoftKeyboard(reenterTextEdit);
             }
-        });
+        });*/
 
         //if user has existing account, goes back to login account UI activity, login UI is main page
         existingAccountTextView.setOnClickListener(new View.OnClickListener() {
@@ -132,66 +116,24 @@ public class AccountCreationActivity extends AppCompatActivity {
         createAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //try {
-                    String emailInput = emailTextEdit.getText().toString(); //user input for email
-                    String passwordInput = passwordTextEdit.getText().toString();
-                    String reenterInput = reenterTextEdit.getText().toString();
-                    //if user doesn't give valid email or is empty
-                    if (emailInput==null || !android.util.Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()) {
-                        popupActivity("emailInput");
-                    }
-                    //if password is not has at least 5 characters, 1 capital letter, or 1 number, or is empty
-                    else if (passwordInput==null || !isLegalPassword(passwordInput)) {
-                        popupActivity("passwordInput");
-                    }
-                    //else if email already used, or is empty
-                    else if (reenterInput==null || !passwordInput.equals(reenterInput)) {
-                        popupActivity("reenterInput");
-                    }
+                String emailInput = emailTextEdit.getText().toString(); //user input for email
+                String passwordInput = passwordTextEdit.getText().toString();
+                String reenterInput = reenterTextEdit.getText().toString();
+                //if user doesn't give valid email or is empty
+                if (emailInput==null || !android.util.Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()) {
+                    popupActivity("emailInput");
+                }
+                //if password is not has at least 5 characters, 1 capital letter, or 1 number, or is empty
+                else if (passwordInput==null || !isLegalPassword(passwordInput)) {
+                    popupActivity("passwordInput");
+                }
+                //else if email already used, or is empty
+                else if (reenterInput==null || !passwordInput.equals(reenterInput)) {
+                    popupActivity("reenterInput");
+                }
                 else { //data stored in database, go to login account UI page
-                        //Intent intent = new Intent(this, InvalidEmailPopupActivity.class);
-                        //startActivity(intent);
-                        finish();
-                    }
-                //} catch(Exception e) {
-                //}
-            }
-        });
-
-        //when user touches outside of textEdit, keyboard will disappear if not already
-        createAccountTextView = (TextView)findViewById(R.id.createAccountTextView);
-        createAccountTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hideSoftKeyboard(createAccountTextView);
-            }
-        });
-        backgroundTextView = (TextView)findViewById(R.id.fullscreen_content);
-        backgroundTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hideSoftKeyboard(backgroundTextView);
-            }
-        });
-        emailTextView = (TextView)findViewById(R.id.emailTextView);
-        emailTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hideSoftKeyboard(emailTextView);
-            }
-        });
-        passwordTextView = (TextView)findViewById(R.id.passwordTextView);
-        passwordTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hideSoftKeyboard(passwordTextView);
-            }
-        });
-        reenterTextView = (TextView)findViewById(R.id.reenterPasswordTextView);
-        reenterTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hideSoftKeyboard(reenterTextView);
+                    finish();
+                }
             }
         });
 

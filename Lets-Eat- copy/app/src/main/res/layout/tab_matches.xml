@@ -13,14 +13,23 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/searchBarSearchView"
+        android:layout_alignParentStart="true"
+        android:id="@+id/matchesListView"
+        android:divider="@color/black_overlay"
+        android:dividerHeight="0.5dp" />
+
     <SearchView
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_toEndOf="@+id/section_label"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/section_label"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="58dp"
         android:hint="Search Matches"
-        android:id="@+id/searchBarSearchView" />
+        android:id="@+id/searchBarSearchView"
+        android:layout_below="@+id/section_label"
+        android:layout_alignParentStart="true"
+        android:clickable="true" />
 
 </RelativeLayout>
