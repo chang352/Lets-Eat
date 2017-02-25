@@ -60,6 +60,10 @@ public class AccountCreationActivity extends AppCompatActivity {
             Intent intent = new Intent(this, InvalidEmailPopupActivity.class);
             startActivity(intent);
         }
+        else if (textEdit.equals("emailAlreadyUsed")) {
+            Intent intent = new Intent(this, EmailAlreadyUsedPopupActivity.class);
+            startActivity(intent);
+        }
         else if (textEdit.equals("passwordInput")) { //invalid password popup
             Intent intent = new Intent(this, InvalidPasswordActivity.class);
             startActivity(intent);
@@ -123,6 +127,11 @@ public class AccountCreationActivity extends AppCompatActivity {
                 if (emailInput==null || !android.util.Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()) {
                     popupActivity("emailInput");
                 }
+                //check if email is already used
+                //send request to the server to check database if email is already used or not
+                /*else if () {
+                    popupActivity("emailAlreadyUsed");
+                }*/
                 //if password is not has at least 5 characters, 1 capital letter, or 1 number, or is empty
                 else if (passwordInput==null || !isLegalPassword(passwordInput)) {
                     popupActivity("passwordInput");
