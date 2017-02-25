@@ -11,16 +11,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 
 public class TabProfileFragment extends Fragment {
 
     public TabProfileFragment() {}
 
     private ListView infoListView;
+    private ImageButton profilePicButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         View rootView = inflater.inflate(R.layout.tab_profile, container, false);
+
+        profilePicButton = (ImageButton)rootView.findViewById(R.id.profilePicButton);
+        profilePicButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         String name = "Name";
         String[] info = {name, "Age", "Location", "Gender", "Favorite Cuisine", "Occupation", "\nHi\nHi\nHi\nHi\nHi\nHi\nHi\nHi\nHi\n"};
         infoListView = (ListView)rootView.findViewById(R.id.infoListView);

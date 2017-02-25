@@ -13,7 +13,7 @@ import android.widget.Button;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class InvalidPasswordActivity extends AppCompatActivity {
+public class PopupInvalidEmail extends AppCompatActivity {
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -88,7 +88,7 @@ public class InvalidPasswordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_invalid_password);
+        setContentView(R.layout.popup_invalid_email);
 
         Button showPopUpButton = (Button) findViewById(R.id.button);
         showPopUpButton.setOnClickListener(new View.OnClickListener() {
@@ -116,6 +116,24 @@ public class InvalidPasswordActivity extends AppCompatActivity {
         // while interacting with the UI.
         findViewById(R.id.button).setOnTouchListener(mDelayHideTouchListener);
     }
+
+    /*private void showSimplePopUp() {
+
+        AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
+        helpBuilder.setTitle("Invalid");
+        helpBuilder.setMessage("This is a Simple Pop Up");
+        helpBuilder.setPositiveButton("Ok",
+                new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do nothing but close the dialog
+                    }
+                });
+
+        // Remember, create doesn't show the dialog
+        AlertDialog helpDialog = helpBuilder.create();
+        helpDialog.show();
+    }*/
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {

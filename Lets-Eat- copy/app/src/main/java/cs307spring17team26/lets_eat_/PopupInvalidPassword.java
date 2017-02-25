@@ -13,7 +13,7 @@ import android.widget.Button;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class PasswordDontMatchActivity extends AppCompatActivity {
+public class PopupInvalidPassword extends AppCompatActivity {
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -88,7 +88,7 @@ public class PasswordDontMatchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_password_dont_match);
+        setContentView(R.layout.popup_invalid_password);
 
         Button showPopUpButton = (Button) findViewById(R.id.button);
         showPopUpButton.setOnClickListener(new View.OnClickListener() {

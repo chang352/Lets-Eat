@@ -20,19 +20,19 @@
             android:screenOrientation="portrait"
             android:theme="@style/FullscreenTheme" />
         <activity
-            android:name=".InvalidEmailPopupActivity"
+            android:name=".PopupInvalidEmail"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="Invalid Email"
             android:screenOrientation="portrait"
             android:theme="@style/FullscreenTheme" />
         <activity
-            android:name=".InvalidPasswordActivity"
+            android:name=".PopupInvalidPassword"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="Invalid Password"
             android:screenOrientation="portrait"
             android:theme="@style/FullscreenTheme" />
         <activity
-            android:name=".PasswordDontMatchActivity"
+            android:name=".PopupPasswordDontMatch"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="Passwords Don&apos;t Match"
             android:screenOrientation="portrait"
@@ -55,7 +55,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".EmailAlreadyUsedPopupActivity"
+            android:name=".PopupEmailAlreadyUsed"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_email_already_used_popup"
             android:theme="@style/FullscreenTheme"></activity>

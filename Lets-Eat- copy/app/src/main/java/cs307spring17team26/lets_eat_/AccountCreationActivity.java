@@ -8,10 +8,7 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.*;
-import android.view.inputmethod.*;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Point;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -57,19 +54,19 @@ public class AccountCreationActivity extends AppCompatActivity {
     //goes to different activity to show popup message of error
     private void popupActivity(String textEdit) {
         if (textEdit.equals("emailInput")) { //invalid email popup
-            Intent intent = new Intent(this, InvalidEmailPopupActivity.class);
+            Intent intent = new Intent(this, PopupInvalidEmail.class);
             startActivity(intent);
         }
         else if (textEdit.equals("emailAlreadyUsed")) {
-            Intent intent = new Intent(this, EmailAlreadyUsedPopupActivity.class);
+            Intent intent = new Intent(this, PopupEmailAlreadyUsed.class);
             startActivity(intent);
         }
         else if (textEdit.equals("passwordInput")) { //invalid password popup
-            Intent intent = new Intent(this, InvalidPasswordActivity.class);
+            Intent intent = new Intent(this, PopupInvalidPassword.class);
             startActivity(intent);
         }
         else if (textEdit.equals("reenterInput")) { //passwords don't match popup
-            Intent intent = new Intent(this, PasswordDontMatchActivity.class);
+            Intent intent = new Intent(this, PopupPasswordDontMatch.class);
             startActivity(intent);
         }
     }
