@@ -1,0 +1,91 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#93c580"
+    tools:context="cs307spring17team26.lets_eat_.ProfileSearches">
+
+    <!-- The primary full-screen view. This can be replaced with whatever view
+         is needed to present your content, e.g. VideoView, SurfaceView,
+         TextureView, etc. -->
+    <TextView
+        android:id="@+id/fullscreen_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:keepScreenOn="true"
+        android:text="@string/dummy_content"
+        android:textColor="#33b5e5"
+        android:textSize="50sp"
+        android:textStyle="bold"
+        android:background="#93c580" />
+
+    <!-- This FrameLayout insets its children based on system windows using
+         android:fitsSystemWindows. -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:background="#93c580">
+
+        <LinearLayout
+            android:id="@+id/fullscreen_content_controls"
+            style="?metaButtonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:background="@color/black_overlay"
+            android:orientation="horizontal"
+            tools:ignore="UselessParent">
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/person_icon"
+            android:id="@+id/searchProfilePic"
+            android:layout_marginTop="-10dp" />
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_marginTop="264dp"
+            android:divider="@color/black_overlay"
+            android:dividerHeight="0.5dp"
+            android:id="@+id/searchInfo"
+            android:layout_height="188dp" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="54dp"
+            android:layout_height="50dp"
+            android:clickable="true"
+            app:fabSize="mini"
+            android:src="@android:drawable/checkbox_on_background"
+            android:id="@+id/acceptButton"
+            android:layout_marginLeft="300dp"
+            android:layout_marginTop="458dp" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="54dp"
+            android:layout_height="50dp"
+            android:clickable="true"
+            app:fabSize="mini"
+            android:src="@android:drawable/arrow_down_float"
+            android:id="@+id/closeProfileButton"
+            android:layout_marginLeft="155dp"
+            android:layout_marginTop="458dp" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="54dp"
+            android:layout_height="50dp"
+            android:clickable="true"
+            android:src="@android:drawable/presence_offline"
+            android:id="@+id/deleteButton"
+            android:layout_marginTop="458dp"
+            android:layout_marginLeft="10dp"
+            app:fabSize="mini" />
+
+    </FrameLayout>
+
+</FrameLayout>

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#0099cc"
-    tools:context="cs307spring17team26.lets_eat_.SearchesProfile">
+    tools:context="cs307spring17team26.lets_eat_.ProfileMatches">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        android:background="#ffffff">
+        android:background="#93c580">
 
         <LinearLayout
             android:id="@+id/fullscreen_content_controls"
@@ -44,26 +44,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:src="@drawable/person_icon"
-            android:id="@+id/imageView"
+            android:id="@+id/matchProfilePic"
             android:layout_marginTop="-10dp" />
 
         <ListView
             android:layout_width="match_parent"
+            android:layout_height="188dp"
             android:layout_marginTop="264dp"
+            android:id="@+id/matchInfo"
             android:divider="@color/black_overlay"
-            android:dividerHeight="0.5dp"
-            android:id="@+id/infoListView"
-            android:layout_height="188dp" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:layout_width="54dp"
-            android:layout_height="50dp"
-            android:clickable="true"
-            app:fabSize="mini"
-            android:src="@android:drawable/checkbox_on_background"
-            android:id="@+id/acceptButton"
-            android:layout_marginLeft="300dp"
-            android:layout_marginTop="458dp" />
+            android:dividerHeight="0.5dp" />
 
         <android.support.design.widget.FloatingActionButton
             android:layout_width="54dp"
@@ -84,6 +74,16 @@
             android:id="@+id/closeProfileButton"
             android:layout_marginLeft="155dp"
             android:layout_marginTop="458dp" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="54dp"
+            android:layout_height="50dp"
+            android:clickable="true"
+            android:src="@android:drawable/ic_menu_edit"
+            android:id="@+id/chatButton"
+            android:layout_marginLeft="300dp"
+            android:layout_marginTop="458dp"
+            app:fabSize="mini" />
 
     </FrameLayout>
 

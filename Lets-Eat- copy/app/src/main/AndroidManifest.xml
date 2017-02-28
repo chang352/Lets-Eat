@@ -18,9 +18,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="Account Creation"
             android:screenOrientation="portrait"
-            android:theme="@style/FullscreenTheme" >
-
-        </activity>
+            android:theme="@style/FullscreenTheme"></activity>
         <activity
             android:name=".PopupInvalidEmail"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -61,10 +59,17 @@
             android:screenOrientation="portrait"
             android:theme="@style/FullscreenTheme" />
         <activity
-            android:name=".SearchesProfile"
+            android:name=".ProfileSearches"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_searches_profile"
-            android:theme="@style/FullscreenTheme"></activity>
+            android:theme="@style/FullscreenTheme" />
+        <activity
+            android:name=".ProfileMatches"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_matches_profile"
+            android:theme="@style/FullscreenTheme">
+
+        </activity>
     </application>
 
 </manifest>

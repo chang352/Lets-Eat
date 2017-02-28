@@ -30,7 +30,7 @@ public class TabProfileFragment extends Fragment {
         profilePicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), SearchesProfile.class);
+                Intent intent = new Intent(getActivity(), ProfileMatches.class);
                 startActivity(intent);
             }
         });
