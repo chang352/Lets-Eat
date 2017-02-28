@@ -18,7 +18,9 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="Account Creation"
             android:screenOrientation="portrait"
-            android:theme="@style/FullscreenTheme" />
+            android:theme="@style/FullscreenTheme" >
+
+        </activity>
         <activity
             android:name=".PopupInvalidEmail"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -40,9 +42,7 @@
         <activity
             android:name=".LoginAccountActivity"
             android:label="Login"
-            android:screenOrientation="portrait">
-
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ApplicationActivity"
             android:label="Let&apos;s Eat!"
@@ -58,6 +58,12 @@
             android:name=".PopupEmailAlreadyUsed"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_email_already_used_popup"
+            android:screenOrientation="portrait"
+            android:theme="@style/FullscreenTheme" />
+        <activity
+            android:name=".SearchesProfile"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_searches_profile"
             android:theme="@style/FullscreenTheme"></activity>
     </application>
 

@@ -24,8 +24,7 @@ public class TabMatchesFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.tab_matches, container, false);
         SearchView searchBarSearchView = (SearchView)rootView.findViewById(R.id.searchBarSearchView); // initialize a search view
         CharSequence query = searchBarSearchView.getQuery(); // get the query string currently in the text field
-        String name = "Name";
-        String[] info = {name, "Age", "Location", "Gender", "Favorite Cuisine", "Occupation", "\nHi\nHi\nHi\nHi\nHi\nHi\nHi\nHi\nHi\n"};
+        String[] info = {"Nathan Chang\n20", "MJ\n50", "Bill Nye\n60"};
         matchesListView = (ListView)rootView.findViewById(R.id.matchesListView);
         ArrayAdapter<String> infoListViewAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, info);
         matchesListView.setAdapter(infoListViewAdapter);

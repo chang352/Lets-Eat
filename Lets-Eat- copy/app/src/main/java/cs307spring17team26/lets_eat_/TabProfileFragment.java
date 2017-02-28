@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.content.Intent;
 
 public class TabProfileFragment extends Fragment {
 
@@ -29,12 +30,18 @@ public class TabProfileFragment extends Fragment {
         profilePicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(getActivity(), SearchesProfile.class);
+                startActivity(intent);
             }
         });
 
-        String name = "Name";
-        String[] info = {name, "Age", "Location", "Gender", "Favorite Cuisine", "Occupation", "\nHi\nHi\nHi\nHi\nHi\nHi\nHi\nHi\nHi\n"};
+        String name = "'Name'";
+        String age = "'Age'";
+        String location = "'Location'";
+        String favCuisine = "'Favorite Cuisine'";
+        String school = "'School'";
+        String aboutMe = "'About Me'";
+        String[] info = {name, age, location, favCuisine, school, aboutMe};
         infoListView = (ListView)rootView.findViewById(R.id.infoListView);
         ArrayAdapter<String> infoListViewAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, info);
         infoListView.setAdapter(infoListViewAdapter);

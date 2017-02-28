@@ -21,8 +21,8 @@ public class TabSearchesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab_searches, container, false);
-        String name = "Bob Smith";
-        String[] info = {name, "MJ", "Nathan Chang"};
+        String name = "Bob Smith\n18";
+        String[] info = {name, "MJ\n19", "Nathan Chang\n20"};
         searchesListView = (ListView)rootView.findViewById(R.id.searchesListView);
         ArrayAdapter<String> searchesListViewAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, info);
         searchesListView.setAdapter(searchesListViewAdapter);
