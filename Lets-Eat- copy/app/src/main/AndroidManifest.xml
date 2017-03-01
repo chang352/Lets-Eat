@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
 
     <application
         android:allowBackup="true"
@@ -18,7 +20,9 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="Account Creation"
             android:screenOrientation="portrait"
-            android:theme="@style/FullscreenTheme"></activity>
+            android:theme="@style/FullscreenTheme">
+
+        </activity>
         <activity
             android:name=".PopupInvalidEmail"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -40,17 +44,19 @@
         <activity
             android:name=".LoginAccountActivity"
             android:label="Login"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ApplicationActivity"
-            android:label="Let&apos;s Eat!"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".ApplicationActivity"
+            android:label="Let&apos;s Eat!"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+
         </activity>
         <activity
             android:name=".PopupEmailAlreadyUsed"

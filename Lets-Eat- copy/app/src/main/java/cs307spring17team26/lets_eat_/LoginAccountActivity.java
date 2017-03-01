@@ -29,6 +29,11 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.content.Context;
+import com.android.volley.*;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import org.json.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -198,7 +203,7 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
             focusView = emailEditText;
             cancel = true;
         }
-
+        final TextView test = (TextView)findViewById(R.id.testview);
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -209,6 +214,57 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
             showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
+            //code for sending user input and checking if matches info in database
+
+            JSONObject ob = new JSONObject();
+            JSONObject ob2 = new JSONObject();
+            try {
+                ob.put("dateOfBirth", "string");
+                ob.put("userId", "string");
+                ob.put("name", "string");
+                ob.put("gender", "string");
+                ob2.put("user", ob);
+
+            } catch(JSONException e) {
+                finish();
+            }
+            Context c  = getApplication();
+            RequestQueue queue = Volley.newRequestQueue(c);
+            JsonObjectRequest j = new JsonObjectRequest(
+                    Request.Method.POST, "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/users/sokola@purdue.edu", ob,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            //response is user's interation in json format, change text
+                            test.setText(response.toString());
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            //error occurred
+                            test.setText(error.toString());
+                        }
+            });
+            queue.add(j);
+            j = new JsonObjectRequest(
+                    Request.Method.GET, "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/users/sokola@purdue.edu", null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            //response is user's interation in json format, change text
+                            test.setText(response.toString());
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //error occurred
+                    test.setText(error.toString());
+                }
+            });
+            queue.add(j);
+
+            Intent intent = new Intent(this, ApplicationActivity.class);
+            //startActivity(intent);
         }
     }
 

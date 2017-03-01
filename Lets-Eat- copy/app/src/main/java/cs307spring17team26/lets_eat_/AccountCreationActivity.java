@@ -138,7 +138,11 @@ public class AccountCreationActivity extends AppCompatActivity {
                     popupActivity("reenterInput");
                 }
                 else { //data stored in database, go to login account UI page
+                    //check database if email is already stored or not
+                    //if not, create new entry in database for new account
                     finish();
+                    //Intent intent = new Intent(ApplicationActivity.class);
+                    //startActivity(intent);
                 }
             }
         });
