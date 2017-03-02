@@ -61,19 +61,18 @@ public class ChatActivity extends AppCompatActivity{
 
     private String parseChatMessage(ChatMessage message) {
         //format chat message as a string: time + userid + message
-        return (message.getMessageTime() + message.getMessageUser() + ":" + message.getMessageText());
+        return (message.getMessageTime() + message.getMessageUser() + ".." + message.getMessageText());
     }
 
     private ChatMessage parseDBChatMessage(String message) {
-        //NEED TO FIGURE OUT WHAT CHARACTER TO USE TO SEPARATE USER FROM MESSAGE
-        //SHOULD USE A CHARACTER THAT CAN'T BE IN AN EMAIL STRING
         ChatMessage newMessage;
         String messageUser = "";
         String messageText = "";
 
         int i = 17;
+	//if we find "..", we know its the end of the email address
         for (; i < message.length(); i++) {
-            if (message.charAt(i) == ':') {
+            if (message.subString(i, i+1) == "..") {
                 break;
             }
             messageUser += message.charAt(i);
