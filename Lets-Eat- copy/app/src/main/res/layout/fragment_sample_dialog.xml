@@ -7,7 +7,7 @@
     android:padding="10dp" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/changeInfoText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Change Info"
@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/okButton"
-        android:layout_marginLeft="180dp" />
+        android:layout_marginLeft="90dp" />
 
     <Button
         android:text="Cancel"
@@ -35,6 +35,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/cancelButton"
         android:layout_marginTop="-49dp"
-        android:layout_marginLeft="275dp" />
+        android:layout_marginLeft="185dp" />
 
 </LinearLayout>
