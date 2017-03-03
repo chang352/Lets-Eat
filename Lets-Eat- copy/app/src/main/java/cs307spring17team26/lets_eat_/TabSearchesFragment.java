@@ -9,8 +9,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ArrayAdapter;
+import android.content.Intent;
 
 public class TabSearchesFragment extends Fragment {
 
@@ -26,6 +28,14 @@ public class TabSearchesFragment extends Fragment {
         searchesListView = (ListView)rootView.findViewById(R.id.searchesListView);
         ArrayAdapter<String> searchesListViewAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, info);
         searchesListView.setAdapter(searchesListViewAdapter);
+        searchesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //show input text to change info
+                Intent intent = new Intent(getActivity(), ProfileSearches.class);
+                getActivity().startActivity(intent);
+            }
+        });
         return rootView;
     }
 }
