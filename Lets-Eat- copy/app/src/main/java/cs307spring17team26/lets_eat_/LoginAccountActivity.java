@@ -37,6 +37,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.lang.String;
 
@@ -222,8 +223,22 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
             //code for sending user input and checking if matches info in database
+            String[] chatHist = new String[2];
+            ChatMessage message1 = new ChatMessage("hello", "sokola@purdue.edu");
+            ChatMessage message2 = new ChatMessage("wassup", "sokola@purdue.edu");
+            chatHist[0] = ChatActivity.parseChatMessage(message1);
+            chatHist[1] = ChatActivity.parseChatMessage(message2);
+            JSONObject messages = new JSONObject();
+            JSONArray messageArray = new JSONArray();
+            try {
+                messages.put("message1", "hello");
+                messages.put("message2", "wassup");
+                messageArray.put(messages);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-            /*JSONObject ob = new JSONObject();
+            JSONObject ob = new JSONObject();
             JSONObject ob2 = new JSONObject();
             try {
                 ob.put("dateOfBirth", "string");
@@ -234,7 +249,8 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
 
             } catch(JSONException e) {
                 finish();
-            }*/
+
+            }
             Context c  = getApplication();
             RequestQueue queue = Volley.newRequestQueue(c);
             /*JsonObjectRequest j = new JsonObjectRequest(
@@ -242,7 +258,7 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            //response is user's interation in json format, change text
+                            //response is user's interaction in json format, change text
                             test.setText(response.toString());
                         }
                     }, new Response.ErrorListener() {
