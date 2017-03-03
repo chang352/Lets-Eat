@@ -1,4 +1,4 @@
-package LetsEatServer;
+package cs307spring17team26.lets_eat_;
 
 import java.util.Arrays;
 
