@@ -33,8 +33,7 @@ public class TabProfileFragment extends Fragment{
         profilePicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ProfileMatches.class);
-                startActivity(intent);
+
             }
         });
 
@@ -52,6 +51,25 @@ public class TabProfileFragment extends Fragment{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //show input text to change info
+                /*Bundle bundle = new Bundle();
+                switch (position) {
+                    case 0:
+                        bundle.putCharSequence("name", "0"); break;
+                    case 1:
+                        bundle.putCharSequence("age", "1"); break;
+                    case 2:
+                        bundle.putCharSequence("location", "2"); break;
+                    case 3:
+                        bundle.putCharSequence("favoriteCuisine", "3"); break;
+                    case 4:
+                        bundle.putCharSequence("school", "4"); break;
+                    case 5:
+                        bundle.putCharSequence("aboutMe", "5"); break;
+                    default:
+                        return;
+                }
+                TabProfileFragment tab = new TabProfileFragment();
+                tab.setArguments(bundle);*/
                 showDialog(new MyDialogFragment());
             }
         });
@@ -63,3 +81,4 @@ public class TabProfileFragment extends Fragment{
         df.show(fm, "Test");
     }
 }
+

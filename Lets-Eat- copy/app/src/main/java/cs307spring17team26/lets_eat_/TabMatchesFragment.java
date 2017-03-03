@@ -4,11 +4,13 @@ package cs307spring17team26.lets_eat_;
  * Created by nathanchang on 2/22/17.
  */
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -28,6 +30,14 @@ public class TabMatchesFragment extends Fragment {
         matchesListView = (ListView)rootView.findViewById(R.id.matchesListView);
         ArrayAdapter<String> infoListViewAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, info);
         matchesListView.setAdapter(infoListViewAdapter);
+        matchesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //show input text to change info
+                Intent intent = new Intent(getActivity(), ProfileMatches.class);
+                getActivity().startActivity(intent);
+            }
+        });
         return rootView;
     }
 }

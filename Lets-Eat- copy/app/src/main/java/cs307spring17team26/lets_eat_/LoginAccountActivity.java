@@ -30,6 +30,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.content.Context;
+import android.view.inputmethod.InputMethodManager;
 import com.android.volley.*;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
@@ -38,6 +39,7 @@ import org.json.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.lang.String;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -72,7 +74,7 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
     private TextView newAccountTextView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_account);
         // Set up the login form.
@@ -91,10 +93,14 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.loginButton);
+        TextView mEmailSignInButton = (TextView) findViewById(R.id.loginButton);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                //hide the keyboard after button click
+                //attempt to login
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                 attemptLogin();
             }
         });
@@ -171,6 +177,7 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
+    View focusView;
     private void attemptLogin() {
         if (mAuthTask != null) {
             return;
@@ -181,11 +188,11 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
         passwordEditText.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = emailEditText.getText().toString();
+        final String email = emailEditText.getText().toString();
         String password = passwordEditText.getText().toString();
 
         boolean cancel = false;
-        View focusView = null;
+        focusView = null;
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
@@ -231,21 +238,7 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
                 e.printStackTrace();
             }
 
-            //push messageStr to database here
-            Context c = getApplication();
             JSONObject ob = new JSONObject();
-            try {
-                ob.put("dateOfBirth", "09/03/1995");
-                ob.put("userid", "sokola@purdue.edu");
-                ob.put("name", "sokolowski");
-                ob.put("gender", "male");
-                ob.put("chatHist", messageArray);
-                ob.put("matches", "hiyer@purdue.edu");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            /*JSONObject ob = new JSONObject();
             JSONObject ob2 = new JSONObject();
             try {
                 ob.put("dateOfBirth", "string");
@@ -256,10 +249,11 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
 
             } catch(JSONException e) {
                 finish();
+
             }
-            Context c  = getApplication();*/
+            Context c  = getApplication();
             RequestQueue queue = Volley.newRequestQueue(c);
-            JsonObjectRequest j = new JsonObjectRequest(
+            /*JsonObjectRequest j = new JsonObjectRequest(
                     Request.Method.POST, "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/users/sokola@purdue.edu", ob,
                     new Response.Listener<JSONObject>() {
                         @Override
@@ -274,27 +268,38 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
                             test.setText(error.toString());
                         }
             });
-            queue.add(j);
-            j = new JsonObjectRequest(
-                    Request.Method.GET, "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/users/sokola@purdue.edu", null,
+            queue.add(j);*/
+            JsonObjectRequest j = new JsonObjectRequest(
+                    Request.Method.GET, "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/users/" + email, null,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
                             //response is user's interaction in json format, change text
-                            test.setText(response.toString());
-                            System.out.println(response.toString());
+                            //test.setText(response.toString());
+                            if (response.toString().contains(email)) {
+                                /*check if hashed password is correct, if not {
+                                passwordEditText.setError(getString(R.string.error_invalid_password));
+                                focusView = passwordEditText;}*/
+                                //if password correct, both email and password are correct at this point, go to main UI page
+                                Intent intent = new Intent(LoginAccountActivity.this, ApplicationActivity.class);
+                                startActivity(intent);
+                            } else {
+                                test.setText(response.toString());
+                                emailEditText.setError(getString(R.string.error_invalid_email));
+                                focusView = emailEditText;
+                            }
                         }
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    //error occurred
-                    test.setText(error.toString());
+                        //error occurred
+                        test.setText(error.toString());
+                        //if invalid email, invalid email error message
+                        emailEditText.setError(getString(R.string.error_invalid_email));
+                        focusView = emailEditText;
                 }
             });
             queue.add(j);
-
-            Intent intent = new Intent(this, ApplicationActivity.class);
-            //startActivity(intent);
         }
     }
 
@@ -455,4 +460,3 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
         }
     }
 }
-
