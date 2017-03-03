@@ -2,25 +2,25 @@ package LetsEatServer;
 
 import java.util.Arrays;
 
-import org.bson.Document;
+import org.json.JSONObject;
 
 import com.mongodb.*;
 
 public class ResponseParser {
 	
-	Account parseAccount(Document user) {
+	Account parseAccount(JSONObject user) {
 		String email = user.get("_id").toString();
 		String pass = user.get("_pass").toString();
 		return new Account(email, pass);
 	}
 	
-	String parseMessage(Document user) {
+	String parseMessage(JSONObject user) {
 		String message = user.get("_chat").toString();
 		//System.out.println(message);
 		return "";
 	}
 	
-	User parseUser(Document user) {
+	User parseUser(JSONObject user) {
 		String dob = user.get("dob").toString();
 		String name = user.get("name").toString();
 		String userId = user.get("userId").toString();
