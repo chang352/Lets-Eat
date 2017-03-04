@@ -12,7 +12,7 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="Let's Eat!"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -23,24 +23,6 @@
             android:theme="@style/FullscreenTheme">
 
         </activity>
-        <activity
-            android:name=".PopupInvalidEmail"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="Invalid Email"
-            android:screenOrientation="portrait"
-            android:theme="@style/FullscreenTheme" />
-        <activity
-            android:name=".PopupInvalidPassword"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="Invalid Password"
-            android:screenOrientation="portrait"
-            android:theme="@style/FullscreenTheme" />
-        <activity
-            android:name=".PopupPasswordDontMatch"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="Passwords Don&apos;t Match"
-            android:screenOrientation="portrait"
-            android:theme="@style/FullscreenTheme" />
         <activity
             android:name=".LoginAccountActivity"
             android:label="Login"
@@ -58,12 +40,6 @@
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
-        <activity
-            android:name=".PopupEmailAlreadyUsed"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_email_already_used_popup"
-            android:screenOrientation="portrait"
-            android:theme="@style/FullscreenTheme" />
         <activity
             android:name=".ProfileSearches"
             android:configChanges="orientation|keyboardHidden|screenSize"
