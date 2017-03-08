@@ -30,4 +30,15 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="54dp"
+        android:layout_height="50dp"
+        android:clickable="true"
+        app:fabSize="mini"
+        android:src="@android:drawable/ic_menu_edit"
+        android:id="@+id/settingsButton"
+        app:elevation="24dp"
+        android:layout_marginTop="508dp"
+        android:layout_marginLeft="300dp" />
+
 </RelativeLayout>
