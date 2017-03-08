@@ -82,7 +82,7 @@
             android:layout_height="50dp"
             android:clickable="true"
             app:fabSize="mini"
-            app:srcCompat="@android:drawable/stat_notify_chat"
+            android:src="@android:drawable/stat_notify_chat"
             android:id="@+id/chatButton"
             android:background="@android:drawable/stat_notify_chat"
             app:elevation="24dp"
