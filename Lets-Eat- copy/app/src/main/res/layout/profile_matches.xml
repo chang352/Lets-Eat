@@ -63,7 +63,8 @@
             android:id="@+id/deleteButton"
             android:layout_marginTop="458dp"
             android:layout_marginLeft="10dp"
-            app:fabSize="mini" />
+            app:fabSize="mini"
+            app:elevation="20dp" />
 
         <android.support.design.widget.FloatingActionButton
             android:layout_width="54dp"
@@ -73,17 +74,20 @@
             android:src="@android:drawable/arrow_down_float"
             android:id="@+id/closeProfileButton"
             android:layout_marginLeft="155dp"
-            android:layout_marginTop="458dp" />
+            android:layout_marginTop="458dp"
+            app:elevation="24dp" />
 
         <android.support.design.widget.FloatingActionButton
             android:layout_width="54dp"
             android:layout_height="50dp"
             android:clickable="true"
-            android:src="@android:drawable/ic_menu_edit"
+            app:fabSize="mini"
+            app:srcCompat="@android:drawable/stat_notify_chat"
             android:id="@+id/chatButton"
+            android:background="@android:drawable/stat_notify_chat"
+            app:elevation="24dp"
             android:layout_marginLeft="300dp"
-            android:layout_marginTop="458dp"
-            app:fabSize="mini" />
+            android:layout_marginTop="458dp" />
 
     </FrameLayout>
 
