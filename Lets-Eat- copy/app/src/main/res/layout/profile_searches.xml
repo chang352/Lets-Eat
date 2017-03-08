@@ -64,7 +64,8 @@
             android:src="@android:drawable/checkbox_on_background"
             android:id="@+id/acceptButton"
             android:layout_marginLeft="300dp"
-            android:layout_marginTop="458dp" />
+            android:layout_marginTop="458dp"
+            app:elevation="24dp" />
 
         <android.support.design.widget.FloatingActionButton
             android:layout_width="54dp"
@@ -74,7 +75,8 @@
             android:src="@android:drawable/arrow_down_float"
             android:id="@+id/closeProfileButton"
             android:layout_marginLeft="155dp"
-            android:layout_marginTop="458dp" />
+            android:layout_marginTop="458dp"
+            app:elevation="24dp" />
 
         <android.support.design.widget.FloatingActionButton
             android:layout_width="54dp"
@@ -84,7 +86,8 @@
             android:id="@+id/deleteButton"
             android:layout_marginTop="458dp"
             android:layout_marginLeft="10dp"
-            app:fabSize="mini" />
+            app:fabSize="mini"
+            app:elevation="24dp" />
 
     </FrameLayout>
 
