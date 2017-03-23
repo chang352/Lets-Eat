@@ -9,10 +9,10 @@ public class User {
     String name;
     String gender;
     String bio;
-    String[] location;
+    int[] location;
     int maxRange;
     
-    public User(String age, String userId, String name, String gender, String bio, String[] location, int maxRange) {
+    public User(String age, String userId, String name, String gender, String bio, int[] location, int maxRange) {
     	this.age = age;
     	this.userId = userId;
         this.name = name;
