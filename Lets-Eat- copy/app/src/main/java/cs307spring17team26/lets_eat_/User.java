@@ -4,20 +4,23 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class User {
-    String dataOfBirth;
+    String age;
     String userId;
     String name;
     String gender;
-    Match[] matches;
-    String[][] chatHist;
+    String bio;
+    String[] location;
+    int maxRange;
     
-    public User(String dataOfBirth, String userId, String name, String gender, Match[] matches, String[][] chatHist) {
-    	this.dataOfBirth = dataOfBirth;
+    public User(String age, String userId, String name, String gender, String bio, String[] location, int maxRange) {
+    	this.age = age;
     	this.userId = userId;
         this.name = name;
         this.gender = gender;
-        this.matches = matches;
-        this.chatHist = chatHist;
+        this.bio = bio;
+        this.location = location;
+        this.maxRange = maxRange;
+        
     }
     
 }
