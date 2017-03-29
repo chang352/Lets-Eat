@@ -37,7 +37,6 @@ import com.android.volley.toolbox.Volley;
 import org.json.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.lang.String;
 
@@ -211,7 +210,7 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
             focusView = emailEditText;
             cancel = true;
         }
-        final TextView test = (TextView)findViewById(R.id.testview);
+        final TextView test = (TextView)findViewById(R.id.textView2);
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -223,65 +222,20 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
             //code for sending user input and checking if matches info in database
-            String[] chatHist = new String[2];
-            ChatMessage message1 = new ChatMessage("hello", "sokola@purdue.edu");
-            ChatMessage message2 = new ChatMessage("wassup", "sokola@purdue.edu");
-            chatHist[0] = ChatActivity.parseChatMessage(message1);
-            chatHist[1] = ChatActivity.parseChatMessage(message2);
-            JSONObject messages = new JSONObject();
-            JSONArray messageArray = new JSONArray();
-            try {
-                messages.put("message1", "hello");
-                messages.put("message2", "wassup");
-                messageArray.put(messages);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            JSONObject ob = new JSONObject();
-            JSONObject ob2 = new JSONObject();
-            try {
-                ob.put("dateOfBirth", "string");
-                ob.put("userId", "string");
-                ob.put("name", "string");
-                ob.put("gender", "string");
-                ob2.put("user", ob);
-
-            } catch(JSONException e) {
-                finish();
-
-            }
             Context c  = getApplication();
             RequestQueue queue = Volley.newRequestQueue(c);
-            /*JsonObjectRequest j = new JsonObjectRequest(
-                    Request.Method.POST, "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/users/sokola@purdue.edu", ob,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            //response is user's interaction in json format, change text
-                            test.setText(response.toString());
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            //error occurred
-                            test.setText(error.toString());
-                        }
-            });
-            queue.add(j);*/
             JsonObjectRequest j = new JsonObjectRequest(
                     Request.Method.GET, "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/users/" + email, null,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
                             //response is user's interaction in json format, change text
-                            //test.setText(response.toString());
                             if (response.toString().contains(email)) {
-                                /*check if hashed password is correct, if not {
-                                passwordEditText.setError(getString(R.string.error_invalid_password));
-                                focusView = passwordEditText;}*/
-                                //if password correct, both email and password are correct at this point, go to main UI page
+                                test.setText(response.toString());
                                 Intent intent = new Intent(LoginAccountActivity.this, ApplicationActivity.class);
+                                Bundle account = new Bundle();
+                                account.putCharSequence("email", email);
+                                intent.putExtras(account);
                                 startActivity(intent);
                             } else {
                                 test.setText(response.toString());
@@ -293,8 +247,8 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
                 @Override
                 public void onErrorResponse(VolleyError error) {
                         //error occurred
-                        test.setText(error.toString());
                         //if invalid email, invalid email error message
+                        test.setText(error.toString());
                         emailEditText.setError(getString(R.string.error_invalid_email));
                         focusView = emailEditText;
                 }
