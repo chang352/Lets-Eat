@@ -17,13 +17,25 @@ import android.widget.SearchView;
 
 public class TabMatchesFragment extends Fragment {
 
-    public TabMatchesFragment() {}
+    private CharSequence email;
+    private String emailString;
+
+    public TabMatchesFragment() {
+        emailString = "";
+    }
 
     private ListView matchesListView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab_matches, container, false);
+
+        Bundle account = this.getArguments();
+        if (account!=null) {
+            email = account.getCharSequence("email");
+            emailString = email.toString();
+        }
+
         SearchView searchBarSearchView = (SearchView)rootView.findViewById(R.id.searchBarSearchView); // initialize a search view
         CharSequence query = searchBarSearchView.getQuery(); // get the query string currently in the text field
         String[] info = {"Nathan Chang\n20", "MJ\n50", "Bill Nye\n60"};
@@ -40,4 +52,6 @@ public class TabMatchesFragment extends Fragment {
         });
         return rootView;
     }
+}
+
 }
