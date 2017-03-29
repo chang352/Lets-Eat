@@ -33,11 +33,17 @@ public class ApplicationActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    private CharSequence email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_application);
+
+        Bundle account = getIntent().getExtras();
+        if (account!=null) {
+            email = account.getCharSequence("email");
+        }
 
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
@@ -136,15 +142,22 @@ public class ApplicationActivity extends AppCompatActivity {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             //return PlaceholderFragment.newInstance(position + 1);
+            Bundle account = new Bundle();
             switch(position) {
                 case 0:
                     TabProfileFragment profile = new TabProfileFragment();
+                    account.putCharSequence("email", email);
+                    profile.setArguments(account);
                     return profile;
                 case 1:
                     TabSearchesFragment searches = new TabSearchesFragment();
+                    account.putCharSequence("email", email);
+                    searches.setArguments(account);
                     return searches;
                 case 2:
                     TabMatchesFragment matches = new TabMatchesFragment();
+                    account.putCharSequence("email", email);
+                    matches.setArguments(account);
                     return matches;
                 default:
                     return null;
