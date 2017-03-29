@@ -8,25 +8,22 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="Let's Eat!"
+        android:label="Let&apos;s Eat!"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".AccountCreationActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="Account Creation"
+            android:label="Create an Account"
             android:screenOrientation="portrait"
-            android:theme="@style/FullscreenTheme">
-
-        </activity>
+            android:theme="@style/FullscreenTheme" />
         <activity
             android:name=".LoginAccountActivity"
             android:label="Login"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,17 +38,24 @@
 
         </activity>
         <activity
+            android:name=".ProfileSettings"
+            android:label="@string/title_activity_profile_settings"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".ProfileSearches"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_searches_profile"
-            android:theme="@style/FullscreenTheme" />
+            android:label=""
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ProfileMatches"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_matches_profile"
-            android:theme="@style/FullscreenTheme">
-
-        </activity>
+            android:label=""
+            android:screenOrientation="portrait" />
+        <activity android:name=".ChatActivity" />
+        <activity
+            android:name=".ProfileSetup"
+            android:label="Setup Profile"
+            android:screenOrientation="portrait"
+            android:theme="@style/FullscreenTheme"></activity>
     </application>
 
 </manifest>
