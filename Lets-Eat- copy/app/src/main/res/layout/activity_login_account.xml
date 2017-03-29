@@ -12,12 +12,12 @@
     android:background="#93c580">
 
     <!-- Login progress -->
+
     <TextView
         android:text="TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/testview"
-        android:background="#ffffff" />
+        android:id="@+id/textView2" />
 
     <TextView
         android:text="\n  Let's Eat!"
