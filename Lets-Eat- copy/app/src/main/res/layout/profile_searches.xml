@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#93c580"
-    tools:context="cs307spring17team26.lets_eat_.ProfileSearches">
+    tools:context="cs307spring17team26.lets_eat_.ProfileSearchesBackup">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
@@ -65,7 +65,7 @@
             android:id="@+id/acceptButton"
             android:layout_marginLeft="300dp"
             android:layout_marginTop="458dp"
-            app:elevation="24dp" />
+            app:elevation="5dp" />
 
         <android.support.design.widget.FloatingActionButton
             android:layout_width="54dp"
@@ -76,7 +76,7 @@
             android:id="@+id/closeProfileButton"
             android:layout_marginLeft="155dp"
             android:layout_marginTop="458dp"
-            app:elevation="24dp" />
+            app:elevation="5dp" />
 
         <android.support.design.widget.FloatingActionButton
             android:layout_width="54dp"
@@ -87,7 +87,7 @@
             android:layout_marginTop="458dp"
             android:layout_marginLeft="10dp"
             app:fabSize="mini"
-            app:elevation="24dp" />
+            app:elevation="5dp" />
 
     </FrameLayout>
 
