@@ -8,17 +8,6 @@
     android:background="#93c580"
     android:fillViewport="true">
 
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="238dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="287dp"
-        android:layout_marginBottom="0dp"
-        android:id="@+id/infoListView"
-        android:divider="@color/black_overlay"
-        android:dividerHeight="0.5dp" />
-
     <ImageButton
 
         android:id="@+id/profilePicButton"
@@ -40,5 +29,32 @@
         app:elevation="24dp"
         android:layout_marginTop="508dp"
         android:layout_marginLeft="300dp" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="238dp"
+        android:id="@+id/infoListView"
+        android:divider="@color/black_overlay"
+        android:dividerHeight="0.5dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView3"
+        android:layout_above="@+id/infoListView"
+        android:layout_alignEnd="@+id/profilePicButton"
+        android:layout_marginBottom="33dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginBottom="0dp"
+        android:id="@+id/textView5" />
 
 </RelativeLayout>
