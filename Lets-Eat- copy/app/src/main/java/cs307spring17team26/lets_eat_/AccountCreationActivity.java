@@ -67,26 +67,6 @@ public class AccountCreationActivity extends AppCompatActivity {
         return true;
     }
 
-    //goes to different activity to show popup message of error
-    /*private void popupActivity(String textEdit) {
-        if (textEdit.equals("emailInput")) { //invalid email popup
-            Intent intent = new Intent(this, PopupInvalidEmail.class);
-            startActivity(intent);
-        }
-        else if (textEdit.equals("emailAlreadyUsed")) {
-            Intent intent = new Intent(this, PopupEmailAlreadyUsed.class);
-            startActivity(intent);
-        }
-        else if (textEdit.equals("passwordInput")) { //invalid password popup
-            Intent intent = new Intent(this, PopupInvalidPassword.class);
-            startActivity(intent);
-        }
-        else if (textEdit.equals("reenterInput")) { //passwords don't match popup
-            Intent intent = new Intent(this, PopupPasswordDontMatch.class);
-            startActivity(intent);
-        }
-    }*/
-
 View focusView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,8 +97,6 @@ View focusView;
         existingAccountTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(this, LoginAccountActivity.class);
-                //startActivity(intent);
                 finish();
             }
         });
@@ -140,21 +118,18 @@ View focusView;
 
                 //if user doesn't give valid email or is empty
                 if (emailInput==null || !android.util.Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()) {
-                    //popupActivity("emailInput");
                     emailTextView.setError(getString(R.string.error_invalid_email));
                     focusView = emailTextView;
                     emailTextView.setText("Invalid Email.");
                 }
                 //if password is not has at least 5 characters, 1 capital letter, or 1 number, or is empty
                 else if (passwordInput==null || !isLegalPassword(passwordInput)) {
-                    //popupActivity("passwordInput");
                     passwordTextView.setError(getString(R.string.error_invalid_password));
                     focusView = passwordTextView;
                     passwordTextView.setText("Invalid Password.");
                 }
                 //else if email already used, or is empty
                 else if (reenterInput==null || !passwordInput.equals(reenterInput)) {
-                    //popupActivity("reenterInput");
                     reenterTextView.setError(getString(R.string.error_invalid_password));
                     focusView = reenterTextView;
                     reenterTextView.setText("Passwords don't match.");
@@ -172,14 +147,10 @@ View focusView;
                                     emailTextView.setError(getString(R.string.error_invalid_email));
                                     focusView = emailTextView;
                                     emailTextView.setText("Email already used.");
-                                    //makeNewAccount(emailInput, passwordInput, errorTextView);
                                 }
                             }, new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    /*emailTextView.setError(getString(R.string.error_invalid_email));
-                                    focusView = emailTextView;
-                                    emailTextView.setText("Email already used.");*/
                                     makeNewAccount(emailInput, passwordInput, errorTextView);
                                 }
                     });
@@ -207,12 +178,18 @@ View focusView;
         //findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
     }
 
-    public void makeNewAccount(String email, String password, final TextView errorTextView) {
-
+    public void makeNewAccount(final String email, String password, final TextView errorTextView) {
+        //don't make the jsonobject here, make it in ProfileSetup class, pass email and password to that class in bundle
         JSONObject object = new JSONObject();
         try {
             object.put("_id", email);
             object.put("password", password);
+            object.put("name", "name");
+            object.put("age", -1);
+            //object.put("location", "location");
+            object.put("gender", "Male");
+            object.put("bio", "Hi");
+            object.put("maxRange", -1);
         } catch(JSONException e) {
             errorTextView.setText("Error occurred when creating your account. Please try again.");
             return;
@@ -220,18 +197,23 @@ View focusView;
         Context c  = getApplication();
         RequestQueue queue = Volley.newRequestQueue(c);
         JsonObjectRequest j = new JsonObjectRequest(
-                Request.Method.PUT, "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/account_info/" + email, object,
+                Request.Method.POST, "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/account_info/" + email, object,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Intent intent = new Intent(AccountCreationActivity.this, ApplicationActivity.class);
+                        Intent intent = new Intent(AccountCreationActivity.this, ProfileSetup.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putCharSequence("email", email);
+                        intent.putExtras(bundle);
                         startActivity(intent);
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //errorTextView.setText("Error occurred when creating your account. Please try again.");
-                        Intent intent = new Intent(AccountCreationActivity.this, ApplicationActivity.class);
+                        Intent intent = new Intent(AccountCreationActivity.this, ProfileSetup.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putCharSequence("email", email);
+                        intent.putExtras(bundle);
                         startActivity(intent);
                     }
         });
