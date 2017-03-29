@@ -16,13 +16,26 @@ import android.content.Intent;
 
 public class TabSearchesFragment extends Fragment {
 
-    public TabSearchesFragment() {}
+    private CharSequence email;
+    private String emailString;
+
+
+    public TabSearchesFragment() {
+        emailString = "";
+    }
 
     private ListView searchesListView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab_searches, container, false);
+
+        Bundle account = this.getArguments();
+        if (account!=null) {
+            email = account.getCharSequence("email");
+            emailString = email.toString();
+        }
+
         String name = "Bob Smith\n18";
         String[] info = {name, "MJ\n19", "Nathan Chang\n20"};
         searchesListView = (ListView)rootView.findViewById(R.id.searchesListView);
