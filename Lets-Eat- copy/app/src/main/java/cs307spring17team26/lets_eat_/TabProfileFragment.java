@@ -100,7 +100,6 @@ public class TabProfileFragment extends Fragment{
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                 //show input text to change info
                                 newInstance(position);
-                                infoListViewAdapter.notifyDataSetChanged();
                             }
                         });
                     }
@@ -125,7 +124,7 @@ public class TabProfileFragment extends Fragment{
         });
         return rootView;
     }
-    
+
     public DialogTabProfile newInstance(int position) {
         DialogTabProfile dialogTabProfile = new DialogTabProfile();
         Bundle bundle = new Bundle();
