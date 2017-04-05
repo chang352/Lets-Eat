@@ -81,10 +81,11 @@ public class DialogTabProfile extends DialogFragment {
             public void onClick(View v) {
                 errorView.setText("\n");
                 newText = editInfo.getText().toString();
+                //if (newText==null && newText.isEmpty()) {dismiss();}
                 JSONObject ob = new JSONObject();
                 switch (position) {
                     case 0:try {ob.put("name", newText);} catch (JSONException e) {e.printStackTrace();} break;
-                    case 1:try {ob.put("age", newText);} catch (JSONException e) {e.printStackTrace();} break;
+                    case 1:if(newText.matches("-?\\d+(\\.\\d+)?")) {try {ob.put("age", newText);} catch (JSONException e) {e.printStackTrace();} break;}
                     case 2:try {ob.put("location", newText);} catch (JSONException e) {e.printStackTrace();} break;
                     case 3:try {ob.put("gender", newText);} catch (JSONException e) {e.printStackTrace();} break;
                     case 4:try {ob.put("bio", newText);} catch (JSONException e) {e.printStackTrace();} break;
@@ -106,13 +107,9 @@ public class DialogTabProfile extends DialogFragment {
                                         } else {
                                             //errorView.setText(message);
                                         }
-                                    } else if (position==2) {
-                                        response.put("location", newText);
-                                    } else if (position==3) {
-                                        response.put("gender", newText);
-                                    } else if (position==4) {
-                                        response.put("bio", newText);
-                                    }
+                                    } else if (position==2) {response.put("location", newText);
+                                    } else if (position==3) {response.put("gender", newText);
+                                    } else if (position==4) {response.put("bio", newText);}
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
