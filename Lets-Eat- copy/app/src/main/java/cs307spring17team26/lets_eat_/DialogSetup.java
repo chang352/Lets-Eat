@@ -23,7 +23,6 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 /**
  * Created by nathanchang on 2/28/17.
@@ -86,20 +85,20 @@ public class DialogSetup extends DialogFragment {
                 newText = editInfo.getText().toString();
                 JSONObject ob = new JSONObject();
                 switch (position) {
-                    case 0:try {ob.put("name", "");} catch (JSONException e) {e.printStackTrace();} break;
-                    case 1:try {ob.put("age", "");} catch (JSONException e) {e.printStackTrace();} break;
-                    case 2:try {ob.put("location", "");} catch (JSONException e) {e.printStackTrace();} break;
-                    case 3:try {ob.put("gender", "");} catch (JSONException e) {e.printStackTrace();} break;
-                    case 4:try {ob.put("bio", "");} catch (JSONException e) {e.printStackTrace();} break;
-                    case 5:try {ob.put("maxRange", "");} catch (JSONException e) {e.printStackTrace();} break;
-                    case 6:try {ob.put("aegRange", "");} catch (JSONException e) {e.printStackTrace();} break;
+                    case 0:try {ob.put("name", newText);} catch (JSONException e) {e.printStackTrace();} break;
+                    case 1:try {ob.put("age", newText);} catch (JSONException e) {e.printStackTrace();} break;
+                    case 2:try {ob.put("location", newText);} catch (JSONException e) {e.printStackTrace();} break;
+                    case 3:try {ob.put("gender", newText);} catch (JSONException e) {e.printStackTrace();} break;
+                    case 4:try {ob.put("bio", newText);} catch (JSONException e) {e.printStackTrace();} break;
+                    case 5:try {ob.put("maxRange", newText);} catch (JSONException e) {e.printStackTrace();} break;
+                    case 6:try {ob.put("ageRange", newText);} catch (JSONException e) {e.printStackTrace();} break;
                     default: break;
 
                 }
                 Context c  = getActivity().getApplication();
                 RequestQueue queue = Volley.newRequestQueue(c);
                 JsonObjectRequest j = new JsonObjectRequest(
-                        Request.Method.PUT, "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/account_info/" + email, ob,
+                        Request.Method.PUT, "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/users/" + email, ob,
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
@@ -108,24 +107,16 @@ public class DialogSetup extends DialogFragment {
                                 if (newText.isEmpty()) {
                                     //dismiss();
                                 }
-                                if ((position==1 || position==5 || position==6) && !newText.matches("[-+]?\\d*\\.?\\d+")) {
-                                    errorView.setText(message);
-                                } else {
-                                    try {
-                                        switch (position) {
-                                            case 0:response.put("name", newText); break; //dismiss();
-                                            case 1:response.put("age", newText); break;// dismiss();
-                                            case 2:response.put("location", newText); break; //dismiss();
-                                            case 3:response.put("gender", newText); break;// dismiss();
-                                            case 4:response.put("bio", newText); break; //dismiss();
-                                            case 5:response.put("maxRange", newText); break; //dismiss();
-                                            case 6:response.put("ageRange", newText); break; //dismiss();
-                                            default: break;
-                                        }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
+                                switch (position) {
+                                    case 0:try {response.put("name", newText);} catch (JSONException e) {e.printStackTrace();}break;
+                                    case 1:if(newText.matches("[-+]?\\d*\\.?\\d+")) {try {response.put("age", newText);} catch (JSONException e) {e.printStackTrace();}break;}
+                                    case 2:try {response.put("location", newText);} catch (JSONException e) {e.printStackTrace();}break;
+                                    case 3:try {response.put("gender", newText);} catch (JSONException e) {e.printStackTrace();}break;
+                                    case 4:try {response.put("bio", newText);} catch (JSONException e) {e.printStackTrace();}break;
+                                    case 5:if(newText.matches("[-+]?\\d*\\.?\\d+")) {try {response.put("maxRange", newText);} catch (JSONException e) {e.printStackTrace();}break;}
+                                    case 6:if(newText.matches("[-+]?\\d*\\.?\\d+")) {try {response.put("ageRange", newText);} catch (JSONException e) {e.printStackTrace();}break;}
                                 }
+
                             }
                         }, new Response.ErrorListener() {
                     @Override
@@ -134,7 +125,6 @@ public class DialogSetup extends DialogFragment {
                 });
                 queue.add(j);
                 dismiss();
-                //code for updating info in database
             }
         });
         cancelButton.setOnClickListener(new View.OnClickListener() {
