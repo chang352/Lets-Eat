@@ -46,10 +46,23 @@ public class ProfileSettings extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         try {
                             maxRange = response.getInt("maxRange");
-                            //ageRange = response.getInt("ageRange");
+                            ageRange = response.getInt("ageRange");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        String distance = "Distance Range\n" + Integer.toString(maxRange);
+                        String age = "Age Range\n" + Integer.toString(ageRange);
+                        String logout = "Log Out\n";
+                        String[] info = {distance, age, logout};
+                        settingsList = (ListView)findViewById(R.id.settingsList);
+                        final ArrayAdapter<String> infoListViewAdapter = new ArrayAdapter<String>(ProfileSettings.this, android.R.layout.simple_list_item_1, info);
+                        settingsList.setAdapter(infoListViewAdapter);
+                        settingsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                newInstance(position);
+                            }
+                        });
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -59,19 +72,6 @@ public class ProfileSettings extends AppCompatActivity {
         });
         queue.add(j);
 
-        String distance = "Distance Range\n" + Integer.toString(maxRange);
-        String age = "Age Range\n" + Integer.toString(ageRange);
-        String logout = "Log Out\n";
-        String[] info = {distance, age, logout};
-        settingsList = (ListView)findViewById(R.id.settingsList);
-        final ArrayAdapter<String> infoListViewAdapter = new ArrayAdapter<String>(ProfileSettings.this, android.R.layout.simple_list_item_1, info);
-        settingsList.setAdapter(infoListViewAdapter);
-        settingsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                newInstance(position);
-            }
-        });
         closeButton = (FloatingActionButton)findViewById(R.id.closeButton);
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
