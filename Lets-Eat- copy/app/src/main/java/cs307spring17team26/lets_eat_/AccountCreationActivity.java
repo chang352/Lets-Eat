@@ -22,6 +22,9 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONObject;
 import org.json.JSONException;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
@@ -180,16 +183,18 @@ View focusView;
 
     public void makeNewAccount(final String email, String password, final TextView errorTextView) {
         //don't make the jsonobject here, make it in ProfileSetup class, pass email and password to that class in bundle
-        JSONObject object = new JSONObject();
+        final JSONObject object = new JSONObject();
         try {
             object.put("_id", email);
             object.put("password", password);
-            object.put("name", "name");
+            object.put("name", "Name");
             object.put("age", -1);
-            //object.put("location", "location");
-            object.put("gender", "Male");
-            object.put("bio", "Hi");
+            ArrayList<Double> array = new ArrayList<>(); array.add(0.0); array.add(0.0);
+            object.put("location", array);
+            object.put("gender", "Gender");
+            object.put("bio", "This is my bio!");
             object.put("maxRange", -1);
+            object.put("ageRange", -1);
         } catch(JSONException e) {
             errorTextView.setText("Error occurred when creating your account. Please try again.");
             return;
@@ -197,27 +202,27 @@ View focusView;
         Context c  = getApplication();
         RequestQueue queue = Volley.newRequestQueue(c);
         JsonObjectRequest j = new JsonObjectRequest(
-                Request.Method.POST, "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/account_info/" + email, object,
+                Request.Method.POST, "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/users/" + email, object,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Intent intent = new Intent(AccountCreationActivity.this, ProfileSetup.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putCharSequence("email", email);
-                        intent.putExtras(bundle);
-                        startActivity(intent);
+                        try {
+                            response.putOpt("user", object);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Intent intent = new Intent(AccountCreationActivity.this, ProfileSetup.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putCharSequence("email", email);
-                        intent.putExtras(bundle);
-                        startActivity(intent);
                     }
         });
         queue.add(j);
+        Intent intent = new Intent(AccountCreationActivity.this, ProfileSetup.class);
+        Bundle bundle = new Bundle();
+        bundle.putCharSequence("email", email);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     @Override
