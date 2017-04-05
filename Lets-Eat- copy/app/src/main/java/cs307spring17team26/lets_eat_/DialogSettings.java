@@ -37,11 +37,9 @@ public class DialogSettings extends DialogFragment {
     private TextView errorView;
     private int position;
     private CharSequence email;
-    private boolean dismiss;
 
     public DialogSettings() {
         position = -1;
-        dismiss = false;
     }
 
     @Override
@@ -84,10 +82,16 @@ public class DialogSettings extends DialogFragment {
                 }
                 errorView.setText("\n");
                 newText = editInfo.getText().toString();
+                JSONObject ob = new JSONObject();
+                switch (position) {
+                    case 0:try {ob.put("maxRange", newText);} catch (JSONException e) {e.printStackTrace();} break;
+                    case 1:try {ob.put("ageRange", newText);} catch (JSONException e) {e.printStackTrace();} break;
+                    default: break;
+                }
                 Context c  = getActivity().getApplication();
                 RequestQueue queue = Volley.newRequestQueue(c);
                 JsonObjectRequest j = new JsonObjectRequest(
-                        Request.Method.PUT, "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/users/" + email, null,
+                        Request.Method.PUT, "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/users/" + email, ob,
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
@@ -95,15 +99,14 @@ public class DialogSettings extends DialogFragment {
                                     if (position==0) {
                                         if (newText.matches("-?\\d+(\\.\\d+)?")) {
                                             response.put("maxRange", Integer.parseInt(newText));
-                                            changeDismiss(true);
                                         } else {
-                                            errorView.setText(message);
+                                            //errorView.setText(message);
                                         }
                                     } else if (position==1) {
                                         if (newText.matches("-?\\d+(\\.\\d+)?")) {
-
+                                            response.put("ageRange", Integer.parseInt(newText));
                                         } else {
-                                            errorView.setText(message);
+                                            //errorView.setText(message);
                                         }
                                     }
                                 } catch (JSONException e) {
@@ -117,7 +120,7 @@ public class DialogSettings extends DialogFragment {
                     }
                 });
                 queue.add(j);
-                dismiss(getDismiss());
+                dismiss();
             }
         });
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -127,16 +130,5 @@ public class DialogSettings extends DialogFragment {
             }
         });
         return rootView;
-    }
-    public void changeDismiss(boolean d) {
-        dismiss = d;
-    }
-    public boolean getDismiss() {
-        return dismiss;
-    }
-    public void dismiss(boolean dismiss) {
-        if (dismiss) {
-            dismiss();
-        }
     }
 }
