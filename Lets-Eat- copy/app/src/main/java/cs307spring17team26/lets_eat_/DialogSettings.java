@@ -1,6 +1,5 @@
 package cs307spring17team26.lets_eat_;
 
-import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.view.LayoutInflater;
@@ -9,7 +8,6 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.content.SharedPreferences;
 import android.content.Context;
 import android.content.Intent;
 
@@ -58,13 +56,15 @@ public class DialogSettings extends DialogFragment {
             email = bundle.getCharSequence("email");
         }
 
+        editInfo.setFocusableInTouchMode(true);
         switch (position) {
             case 0:
                 changeinfoText.setText("Distance Range"); break;
+            /*case 1:
+                changeinfoText.setText("Age Range"); break;*/
             case 1:
-                changeinfoText.setText("Age Range"); break;
-            case 2:
                 changeinfoText.setText("Are you sure you want to log out?");
+                editInfo.setFocusable(false);
                 okButton.setText("YES");
                 cancelButton.setText("NO");
                 break;
@@ -74,7 +74,7 @@ public class DialogSettings extends DialogFragment {
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (position==2) {
+                if (position==1) {
                     //logout(), return back to login screen, logging out of account, clears all activities in the
                     Intent intent = new Intent(getActivity(), LoginAccountActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -85,7 +85,7 @@ public class DialogSettings extends DialogFragment {
                 JSONObject ob = new JSONObject();
                 switch (position) {
                     case 0:try {ob.put("maxRange", newText);} catch (JSONException e) {e.printStackTrace();} break;
-                    case 1:try {ob.put("ageRange", newText);} catch (JSONException e) {e.printStackTrace();} break;
+                    //case 1:try {ob.put("ageRange", newText);} catch (JSONException e) {e.printStackTrace();} break;
                     default: break;
                 }
                 Context c  = getActivity().getApplication();
@@ -102,13 +102,13 @@ public class DialogSettings extends DialogFragment {
                                         } else {
                                             //errorView.setText(message);
                                         }
-                                    } else if (position==1) {
+                                    } /*else if (position==1) {
                                         if (newText.matches("-?\\d+(\\.\\d+)?")) {
                                             response.put("ageRange", Integer.parseInt(newText));
                                         } else {
                                             //errorView.setText(message);
                                         }
-                                    }
+                                    }*/
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
