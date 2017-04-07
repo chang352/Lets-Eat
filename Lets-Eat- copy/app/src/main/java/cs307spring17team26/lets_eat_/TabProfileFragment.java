@@ -17,7 +17,6 @@ import android.widget.ListView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.content.Intent;
-import android.support.v4.app.DialogFragment;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -84,14 +83,14 @@ public class TabProfileFragment extends Fragment{
                             test.setText("TRY" + response.toString());
                             nameString = response.getString("name");
                             age = response.getInt("age");
-                            locationString = response.getString("location");
+                            //locationString = response.getString("location");
                             genderString = response.getString("gender");
                             bioString = response.getString("bio");
                         } catch (JSONException e) {
                             test.setText("CATCH" + response.toString());
                             e.printStackTrace();
                         }
-                        String[] info = {nameString, Integer.toString(age), locationString, genderString, bioString};
+                        String[] info = {nameString, Integer.toString(age), genderString, bioString};
                         infoListView = (ListView)rootView.findViewById(R.id.infoListView);
                         final ArrayAdapter<String> infoListViewAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, info);
                         infoListView.setAdapter(infoListViewAdapter);
