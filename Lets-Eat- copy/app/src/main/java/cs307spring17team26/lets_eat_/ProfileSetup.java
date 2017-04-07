@@ -15,15 +15,6 @@ import android.content.Intent;
 public class ProfileSetup extends AppCompatActivity {
 
     private CharSequence email;
-    private String emailString;
-    private String nameString;
-    private int age;
-    private String locationString;
-    private String genderString;
-    private String bioString;
-    private int maxDistance;
-    private int minAge;
-    private int maxAge;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +40,7 @@ public class ProfileSetup extends AppCompatActivity {
             }
         });
         //just display the property, dialogsetup will use PUT to change info
-        String[] list = {"'Name'", "'Age", "'Location'", "'Gender'", "'Bio'", "'Distance Range'", "'Age Range"};
+        String[] list = {"'Name'", "'Age'", "'Gender'", "'Bio'", "'Distance Range'"};
         ArrayAdapter<String> infoListViewAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
         info.setAdapter(infoListViewAdapter);
         info.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -59,11 +50,7 @@ public class ProfileSetup extends AppCompatActivity {
             }
         });
     }
-
-    public void showDialog(DialogFragment df) {
-        FragmentManager fm = getSupportFragmentManager();
-        df.show(fm, "Test");
-    }
+    
     public DialogSetup newInstance(int position) {
         DialogSetup dialogSetup = new DialogSetup();
         Bundle bundle = new Bundle();
