@@ -1,7 +1,6 @@
 package cs307spring17team26.lets_eat_;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.view.LayoutInflater;
@@ -36,8 +35,7 @@ public class DialogTabProfile extends DialogFragment {
     private int position;
     private CharSequence email;
 
-    public DialogTabProfile() {
-    }
+    public DialogTabProfile() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -63,13 +61,13 @@ public class DialogTabProfile extends DialogFragment {
             case 1:
                 changeinfoText.setText("Age");
                 break;
-            case 2:
+            /*case 2:
                 changeinfoText.setText("Location");
-                break;
-            case 3:
+                break;*/
+            case 2:
                 changeinfoText.setText("Gender");
                 break;
-            case 4:
+            case 3:
                 changeinfoText.setText("Bio");
                 break;
             default:
@@ -86,9 +84,9 @@ public class DialogTabProfile extends DialogFragment {
                 switch (position) {
                     case 0:try {ob.put("name", newText);} catch (JSONException e) {e.printStackTrace();} break;
                     case 1:if(newText.matches("-?\\d+(\\.\\d+)?")) {try {ob.put("age", newText);} catch (JSONException e) {e.printStackTrace();} break;}
-                    case 2:try {ob.put("location", newText);} catch (JSONException e) {e.printStackTrace();} break;
-                    case 3:try {ob.put("gender", newText);} catch (JSONException e) {e.printStackTrace();} break;
-                    case 4:try {ob.put("bio", newText);} catch (JSONException e) {e.printStackTrace();} break;
+                    //case 2:try {ob.put("location", newText);} catch (JSONException e) {e.printStackTrace();} break;
+                    case 2:try {ob.put("gender", newText);} catch (JSONException e) {e.printStackTrace();} break;
+                    case 3:try {ob.put("bio", newText);} catch (JSONException e) {e.printStackTrace();} break;
                     default: break;
                 }
                 Context c = getActivity().getApplication();
@@ -107,9 +105,9 @@ public class DialogTabProfile extends DialogFragment {
                                         } else {
                                             //errorView.setText(message);
                                         }
-                                    } else if (position==2) {response.put("location", newText);
-                                    } else if (position==3) {response.put("gender", newText);
-                                    } else if (position==4) {response.put("bio", newText);}
+                                    //} else if (position==2) {response.put("location", newText);
+                                    } else if (position==2) {response.put("gender", newText);
+                                    } else if (position==3) {response.put("bio", newText);}
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
