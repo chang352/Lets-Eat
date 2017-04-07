@@ -6,7 +6,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Patterns;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.*;
@@ -21,9 +20,6 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
 import org.json.JSONException;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -182,19 +178,18 @@ View focusView;
     }
 
     public void makeNewAccount(final String email, String password, final TextView errorTextView) {
-        //don't make the jsonobject here, make it in ProfileSetup class, pass email and password to that class in bundle
+        //make users in database
         final JSONObject object = new JSONObject();
         try {
             object.put("_id", email);
-            object.put("password", password);
             object.put("name", "Name");
             object.put("age", -1);
-            ArrayList<Double> array = new ArrayList<>(); array.add(0.0); array.add(0.0);
-            object.put("location", array);
+            object.put("location", 0.0);
+            object.accumulate("location", 0.0);
             object.put("gender", "Gender");
             object.put("bio", "This is my bio!");
             object.put("maxRange", -1);
-            object.put("ageRange", -1);
+            //object.put("hometown", "Hometown");
         } catch(JSONException e) {
             errorTextView.setText("Error occurred when creating your account. Please try again.");
             return;
@@ -218,6 +213,88 @@ View focusView;
                     }
         });
         queue.add(j);
+        //make account in database
+        final JSONObject object2 = new JSONObject();
+        try {
+            object2.put("_id", email);
+            object2.put("password", password);
+        } catch(JSONException e) {
+            errorTextView.setText("Error occurred when creating your account. Please try again.");
+            return;
+        }
+        Context c2  = getApplication();
+        RequestQueue queue2 = Volley.newRequestQueue(c2);
+        JsonObjectRequest j2 = new JsonObjectRequest(
+                Request.Method.POST, "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/account/" + email, object2,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            response.putOpt("user", object2);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+        queue2.add(j2);
+        //make chat in database
+        final JSONObject object3 = new JSONObject();
+        try {
+            object3.put("_id", email);
+        } catch(JSONException e) {
+            errorTextView.setText("Error occurred when creating your account. Please try again.");
+            return;
+        }
+        Context c3  = getApplication();
+        RequestQueue queue3 = Volley.newRequestQueue(c3);
+        JsonObjectRequest j3 = new JsonObjectRequest(
+                Request.Method.POST, "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/chat/" + email, object3,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            response.putOpt("user", object3);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+        queue3.add(j3);
+        //make matches in database
+        final JSONObject object4 = new JSONObject();
+        try {
+            object4.put("_id", email);
+        } catch(JSONException e) {
+            errorTextView.setText("Error occurred when creating your account. Please try again.");
+            return;
+        }
+        Context c4  = getApplication();
+        RequestQueue queue4 = Volley.newRequestQueue(c2);
+        JsonObjectRequest j4 = new JsonObjectRequest(
+                Request.Method.POST, "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/matches/" + email, object4,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            response.putOpt("user", object4);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+        queue4.add(j4);
         Intent intent = new Intent(AccountCreationActivity.this, ProfileSetup.class);
         Bundle bundle = new Bundle();
         bundle.putCharSequence("email", email);
