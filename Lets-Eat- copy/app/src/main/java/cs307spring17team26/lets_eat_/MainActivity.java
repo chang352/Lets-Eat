@@ -1,28 +1,32 @@
 package com.example.android.yelpapi;
 
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.widget.TextView;
+
 import com.yelp.clientlib.connection.YelpAPI;
 import com.yelp.clientlib.connection.YelpAPIFactory;
 import com.yelp.clientlib.entities.Business;
 import com.yelp.clientlib.entities.SearchResponse;
 import com.yelp.clientlib.entities.options.CoordinateOptions;
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * Created by Ryan on 4/4/2017.
- */
+public class MainActivity extends AppCompatActivity {
 
-public class Restaurants {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-    private YelpAPI yelpApi;
-    private Map<String, String> params;
-
-    public Restaurants() {
+        YelpAPI yelpApi;
+        Map<String, String> params;
 
         final String consumerKey = "jINYfs_pNzwGGFJJdVUF-g";
         final String consumerSecret = "d0Z7lmAkmiSfP8uXFKPF8SUOuCk";
@@ -34,13 +38,11 @@ public class Restaurants {
         params = new HashMap<String, String>();
         params.put("term", "restaurants");
 
-    }
 
-    public ArrayList<Business> getRestaurants(int maxRange, double longitude, double latitude) {
 
-        params.put("radius", Double.toString(maxRange * 1609.34));
+        params.put("radius", Double.toString(100 * 1609.34));
 
-        CoordinateOptions coordinates = CoordinateOptions.builder().longitude(longitude).latitude(latitude).build();
+        CoordinateOptions coordinates = CoordinateOptions.builder().longitude(122.4194).latitude(37.7722).build();
 
         Call<SearchResponse> call = yelpApi.search(coordinates, params);
 
@@ -48,25 +50,17 @@ public class Restaurants {
             @Override
             public void onResponse(Call<SearchResponse> call, Response<SearchResponse> response) {
                 ArrayList<Business> businesses = response.body().businesses();
+                TextView restaurants = (TextView)findViewById(R.id.restaurants);
+                restaurants.setText(response.body().businesses().get(0).name());
             }
 
             @Override
             public void onFailure(Call<SearchResponse> call, Throwable t) {
-
+                TextView restaurants = (TextView)findViewById(R.id.restaurants);
+                restaurants.setText(t.toString());
             }
         });
 
-        Response<SearchResponse> response;
-        try {
-            response = call.execute();
-        } catch (IOException e) {
-            return null;
-        }
-
-        ArrayList<Business> businesses = response.body().businesses();
-
-        return businesses;
 
     }
-
 }
