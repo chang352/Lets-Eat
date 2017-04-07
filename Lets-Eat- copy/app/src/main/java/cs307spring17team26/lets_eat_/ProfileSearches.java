@@ -50,11 +50,12 @@ public class ProfileSearches extends AppCompatActivity {
 
         String name = "'Name'";
         String age = "'Age'";
-        String location = "'Location'";
-        String favCuisine = "'Favorite Cuisine'";
-        String school = "'School'";
+        //String location = "'Location'";
+        //String favCuisine = "'Favorite Cuisine'";
+        //String school = "'School'";
+        String gender = "'Gender'";
         String aboutMe = "'About Me'";
-        String[] info = {name, age, location, favCuisine, school, aboutMe};
+        String[] info = {name, age, gender, aboutMe};
         ArrayAdapter<String> infoListViewAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, info);
         infoListView.setAdapter(infoListViewAdapter);
 
