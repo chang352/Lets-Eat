@@ -2,7 +2,6 @@ package cs307spring17team26.lets_eat_;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -46,14 +45,14 @@ public class ProfileSettings extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         try {
                             maxRange = response.getInt("maxRange");
-                            ageRange = response.getInt("ageRange");
+                            //ageRange = response.getInt("ageRange");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                         String distance = "Distance Range\n" + Integer.toString(maxRange);
-                        String age = "Age Range\n" + Integer.toString(ageRange);
+                        //String age = "Age Range\n" + Integer.toString(ageRange);
                         String logout = "Log Out\n";
-                        String[] info = {distance, age, logout};
+                        String[] info = {distance, logout};
                         settingsList = (ListView)findViewById(R.id.settingsList);
                         final ArrayAdapter<String> infoListViewAdapter = new ArrayAdapter<String>(ProfileSettings.this, android.R.layout.simple_list_item_1, info);
                         settingsList.setAdapter(infoListViewAdapter);
@@ -98,4 +97,3 @@ public class ProfileSettings extends AppCompatActivity {
         dialogSettings.show(fm, "");
         return dialogSettings;
     }
-}
