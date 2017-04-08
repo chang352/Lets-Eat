@@ -1,5 +1,6 @@
 package cs307spring17team26.lets_eat_;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -8,10 +9,20 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import static java.lang.Character.isDigit;
@@ -22,6 +33,7 @@ import static java.lang.Character.isDigit;
 
 public class ChatActivity extends AppCompatActivity{
     private static final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+    private static final String url = "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/chat/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +51,57 @@ public class ChatActivity extends AppCompatActivity{
 
                 //push input to database, perhaps as a ChatMessage?
                 //ChatMessage message = new ChatMessage(input, getUser());
+                RequestQueue queue = Volley.newRequestQueue(getApplication());
+
+                String inputText = input.getText().toString();
+
+                String currentUser = "";
+                Bundle account = getIntent().getExtras();
+                if (account != null) {
+                    currentUser = account.getCharSequence("email").toString();
+                }
+                final ChatMessage message = new ChatMessage(inputText, currentUser);
+                JSONObject JSONChatMessage = new JSONObject();
+                try {
+                    JSONChatMessage.put("user1@purdue.edu", message);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                final JSONObject messagesObj = new JSONObject();
+
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url + currentUser, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            response.accumulate("user1@purdue.edu", parseChatMessage(message));
+                            messagesObj.put("newArray", response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                });
+
+                queue.add(jsonObjectRequest);
+
+                JsonObjectRequest jsonObjectRequest1 = new JsonObjectRequest(Request.Method.PUT, url + currentUser, messagesObj, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+
+                queue.add(jsonObjectRequest1);
 
                 input.setText("");
             }
@@ -72,7 +135,7 @@ public class ChatActivity extends AppCompatActivity{
         int i = 17;
 	//if we find "..", we know its the end of the email address
         for (; i < message.length(); i++) {
-            if (message.subString(i, i+1) == "..") {
+            if (message.substring(i, i+1) == "..") {
                 break;
             }
             messageUser += message.charAt(i);

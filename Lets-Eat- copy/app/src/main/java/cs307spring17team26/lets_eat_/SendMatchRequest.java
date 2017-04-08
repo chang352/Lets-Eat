@@ -1,6 +1,8 @@
 package cs307spring17team26.lets_eat_;
 
 import android.app.Fragment;
+import android.content.Context;
+import android.os.Bundle;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -13,117 +15,197 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Iterator;
+
 /**
  * Created by hareesh on 3/1/17.
  */
 
 public class SendMatchRequest extends Fragment {
-    private static final String url = "ec2-52-24-61-118.us-west-2.compute.amazonaws.com/users/";
+    private static final String url = "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/matches/";
+    public static JSONObject obj;
+    public static JSONObject potentialMatches;
 
+    //TEST FUNCTIONS
     /*
-    Step 1: Get requested user's _matches array
-    Step 2: Search _matches for original user
-    Step 3: If original user is in _matches, set both _valid array indexes to 1. Else, set original user's _valid array index to 0
-     */
+    public static void main(String[] args) {
+        String user1 = "sokola@purdue.edu";
+        String user2 = "user1@purdue.edu";
+        SendMatchRequest sendMatchRequest = new SendMatchRequest();
+    }
+    */
 
-    public void sendMatchRequest(final String user1, final String user2) {
-        //Get user2's _matches array
-        RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
+    public void testSend(String user1, String user2, SendMatchRequest sendMatchRequest, Context context) {
+        sendMatchRequest.sendMatchRequest(user1, user2, context);
+        System.out.println("Match request sent");
+    }
 
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url + user2 + "/", null, new Response.Listener<JSONObject>() {
+    public void testChatFail(String user1, String user2, SendMatchRequest sendMatchRequest, Context context) {
+        System.out.println(sendMatchRequest.canChat(user1, user2, context));
+    }
+
+    public void testAccept(String user1, String user2, SendMatchRequest sendMatchRequest, Context context) {
+        sendMatchRequest.acceptMatch(user1, user2, context);
+        System.out.println("sokola accepts user1");
+    }
+
+    public void testChatSuccess(String user1, String user2, SendMatchRequest sendMatchRequest, Context context) {
+        System.out.println(sendMatchRequest.canChat(user1, user2, context) + " :)");
+    }
+
+    public void testDeny(String user1, String user2, SendMatchRequest sendMatchRequest, Context context) {
+        sendMatchRequest.denyMatch(user1, user2, context);
+        sendMatchRequest.denyMatch(user2, user1, context);
+        System.out.println("Match denied");
+    }
+
+    public void testRetrieveMatches(String user1, SendMatchRequest sendMatchRequest, Context context) {
+        JSONObject testObj = sendMatchRequest.retrievePotentialMatches(user1, context);
+        System.out.println(testObj.toString());
+    }
+
+    //USEFUL FUNCTIONS
+    public void putData(final String user1, final String user2, JSONObject data, Context context) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url + user1, data, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                //do something
-                try {
-                    boolean user1Exists = false;
-                    JSONArray user2_matches = response.getJSONArray("matches");
-                    int i = 0;
-                    for (; i < user2_matches.length(); i++) {
-                        if (user2_matches.getString(i).equals(user1)) {
-                            user1Exists = true;
-                        }
-                    }
 
-                    if (user1Exists) {
-                        //call method to set user2's valid to 1
-                        changeUser2Valid(i, user2);
-                        //call method to get user1's matches, which will then set user1's valid to 1
-                        changeUser1Matches(user1, user2);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        queue.add(jsonObjectRequest);
+    }
+
+    public void sendMatchRequest(final String user1, final String user2, final Context context) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url + user1, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+                    if (response.getInt(user2) <= 0) {
+
+                        JSONObject newObject = new JSONObject();
+                        newObject.put(user2, 1);
+                        putData(user1, user2, newObject, context);
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        queue.add(jsonObjectRequest);
+    }
+
+    public void acceptMatch(final String user1, final String user2, final Context context) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url + user1, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONObject newObject = new JSONObject();
+                    newObject.put(user2, 2);
+                    putData(user1, user2, newObject, context);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        queue.add(jsonObjectRequest);
+    }
+
+    public void denyMatch(final String user1, final String user2, final Context context) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url + user1, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    response.put(user2, -1);
+                    JSONObject newObject = new JSONObject();
+                    newObject.put(user2, -1);
+                    putData(user1, user2, newObject, context);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        queue.add(jsonObjectRequest);
+    }
+
+    public JSONObject retrievePotentialMatches(final String user1, Context context) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url + user1, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    potentialMatches = new JSONObject();
+                    Iterator<String> users = response.keys();
+                    while (users.hasNext()) {
+                        potentialMatches.put(users.next(), 0);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        queue.add(jsonObjectRequest);
+
+        return potentialMatches;
+    }
+
+    public boolean canChat(final String user1, final String user2, Context context) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        final JSONObject canChatObj = new JSONObject();
+        boolean canChat = false;
+        SendMatchRequest.obj = new JSONObject();
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url + user1, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    if (response.getInt(user2) == 2) {
+                        SendMatchRequest.obj.put(user2, true);
+                        System.out.println("true!");
                     } else {
-                        //call method to get user1's valid, set to 0
-                        changeUser1Valid(i, user1);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();;
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                System.out.println(error.toString());
-            }
-        });
-
-        queue.add(jsObjRequest);
-
-    }
-
-    public void changeUser2Valid(final int index, final String user2) {
-        RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url + user2 + "/", null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONArray user2_valid = response.getJSONArray("valid");
-                    user2_valid.put(index, 1);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                System.out.println(error.toString());
-            }
-        });
-    }
-
-    public void changeUser1Valid(final int index, final String user1) {
-        RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url + user1 + "/", null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONArray user1_valid = response.getJSONArray("valid");
-                    user1_valid.put(index, 0);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                System.out.println(error.toString());
-            }
-        });
-    }
-
-    public void changeUser1Matches(final String user1, final String user2) {
-        RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url + user1 + "/", null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONArray user1_matches = response.getJSONArray("matches");
-                    int i = 0;
-                    for (; i < user1_matches.length(); i++) {
-                        if (user1_matches.getString(i).equals(user2)) {
-                            changeUser1Valid(i, user1);
-                        }
+                        SendMatchRequest.obj.put(user2, false);
+                        System.out.println("false!");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -132,8 +214,21 @@ public class SendMatchRequest extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                System.out.println(error.toString());
+                error.printStackTrace();
             }
         });
+
+        queue.add(jsonObjectRequest);
+        try {
+            if (SendMatchRequest.obj != null) {
+                canChat = SendMatchRequest.obj.getBoolean(user2);
+            } else {
+                System.out.println("it's null :(");
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return canChat;
     }
 }
