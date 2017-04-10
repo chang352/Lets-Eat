@@ -2,6 +2,7 @@ package cs307spring17team26.lets_eat_;
 
 import android.content.Context;
 import android.support.v4.app.DialogFragment;
+import android.text.InputType;
 import android.view.View;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -60,7 +61,7 @@ public class DialogSetup extends DialogFragment {
             case 0:
                 changeinfoText.setText("Name"); break;
             case 1:
-                changeinfoText.setText("Age"); break;
+                changeinfoText.setText("Age"); editInfo.setInputType(InputType.TYPE_CLASS_NUMBER); break;
             /*case 2:
                 changeinfoText.setText("Location"); break;*/
             case 2:
@@ -68,7 +69,7 @@ public class DialogSetup extends DialogFragment {
             case 3:
                 changeinfoText.setText("Bio"); break;
             case 4:
-                changeinfoText.setText("Distance Range"); break;
+                changeinfoText.setText("Distance Range"); editInfo.setInputType(InputType.TYPE_CLASS_NUMBER); break;
             /*case 5:
                 changeinfoText.setText("Age Range"); break;*/
             default: break;
@@ -105,11 +106,11 @@ public class DialogSetup extends DialogFragment {
                                 }
                                 switch (position) {
                                     case 0:try {response.put("name", newText);} catch (JSONException e) {e.printStackTrace();}break;
-                                    case 1:if(newText.matches("[-+]?\\d*\\.?\\d+")) {try {response.put("age", newText);} catch (JSONException e) {e.printStackTrace();}break;}
+                                    case 1:try {response.put("age", newText);} catch (JSONException e) {e.printStackTrace();}break;
                                     //case 2:try {response.put("location", newText);} catch (JSONException e) {e.printStackTrace();}break;
                                     case 2:try {response.put("gender", newText);} catch (JSONException e) {e.printStackTrace();}break;
                                     case 3:try {response.put("bio", newText);} catch (JSONException e) {e.printStackTrace();}break;
-                                    case 4:if(newText.matches("[-+]?\\d*\\.?\\d+")) {try {response.put("maxRange", newText);} catch (JSONException e) {e.printStackTrace();}break;}
+                                    case 4:try {response.put("maxRange", newText);} catch (JSONException e) {e.printStackTrace();}break;
                                     //case 5:if(newText.matches("[-+]?\\d*\\.?\\d+")) {try {response.put("ageRange", newText);} catch (JSONException e) {e.printStackTrace();}break;}
                                 }
 
