@@ -73,7 +73,7 @@
             app:fabSize="mini"
             android:src="@android:drawable/arrow_down_float"
             android:id="@+id/closeProfileButton"
-            android:layout_marginLeft="155dp"
+            android:layout_marginLeft="105dp"
             android:layout_marginTop="458dp"
             app:elevation="5dp" />
 
@@ -85,9 +85,26 @@
             android:src="@android:drawable/stat_notify_chat"
             android:id="@+id/chatButton"
             android:background="@drawable/design_fab_background"
-            app:elevation="6dp"
+            app:elevation="5dp"
             android:layout_marginLeft="300dp"
             android:layout_marginTop="458dp" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="54dp"
+            android:layout_height="50dp"
+            android:clickable="true"
+            android:src="@android:drawable/ic_menu_directions"
+            android:id="@+id/restaurantButton"
+            app:elevation="5dp"
+            android:layout_marginTop="458dp"
+            app:fabSize="mini"
+            android:layout_marginLeft="205dp" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/test" />
 
     </FrameLayout>
 
