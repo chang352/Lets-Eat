@@ -2,6 +2,7 @@ package cs307spring17team26.lets_eat_;
 
 import android.content.Context;
 import android.support.v4.app.DialogFragment;
+import android.text.InputType;
 import android.view.View;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -46,8 +47,6 @@ public class DialogTabProfile extends DialogFragment {
         changeinfoText = (TextView) rootView.findViewById(R.id.changeInfoText);
         errorView = (TextView) rootView.findViewById(R.id.errorView);
 
-        final String message = "Invalid: Must be a number.";
-
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             position = bundle.getInt("position");
@@ -56,22 +55,17 @@ public class DialogTabProfile extends DialogFragment {
 
         switch (position) {
             case 0:
-                changeinfoText.setText("Name");
-                break;
+                changeinfoText.setText("Name"); break;
             case 1:
-                changeinfoText.setText("Age");
-                break;
+                changeinfoText.setText("Age");editInfo.setInputType(InputType.TYPE_CLASS_NUMBER); break;
             /*case 2:
                 changeinfoText.setText("Location");
                 break;*/
             case 2:
-                changeinfoText.setText("Gender");
-                break;
+                changeinfoText.setText("Gender"); break;
             case 3:
-                changeinfoText.setText("Bio");
-                break;
-            default:
-                break;
+                changeinfoText.setText("Bio"); break;
+            default: break;
         }
 
         okButton.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +77,7 @@ public class DialogTabProfile extends DialogFragment {
                 JSONObject ob = new JSONObject();
                 switch (position) {
                     case 0:try {ob.put("name", newText);} catch (JSONException e) {e.printStackTrace();} break;
-                    case 1:if(newText.matches("-?\\d+(\\.\\d+)?")) {try {ob.put("age", newText);} catch (JSONException e) {e.printStackTrace();} break;}
+                    case 1:try {ob.put("age", newText);} catch (JSONException e) {e.printStackTrace();} break;
                     //case 2:try {ob.put("location", newText);} catch (JSONException e) {e.printStackTrace();} break;
                     case 2:try {ob.put("gender", newText);} catch (JSONException e) {e.printStackTrace();} break;
                     case 3:try {ob.put("bio", newText);} catch (JSONException e) {e.printStackTrace();} break;
@@ -100,11 +94,7 @@ public class DialogTabProfile extends DialogFragment {
                                     if (position==0) {
                                         response.put("name", newText);
                                     } else if (position==1) {
-                                        if (newText.matches("-?\\d+(\\.\\d+)?")) {
-                                            response.put("age", Integer.parseInt(newText));
-                                        } else {
-                                            //errorView.setText(message);
-                                        }
+                                        response.put("age", Integer.parseInt(newText));
                                     //} else if (position==2) {response.put("location", newText);
                                     } else if (position==2) {response.put("gender", newText);
                                     } else if (position==3) {response.put("bio", newText);}
