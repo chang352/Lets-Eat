@@ -51,8 +51,9 @@ public class ProfileSettings extends AppCompatActivity {
                         }
                         String distance = "Distance Range\n" + Integer.toString(maxRange);
                         //String age = "Age Range\n" + Integer.toString(ageRange);
+                        String feedback = "Feedback\n";
                         String logout = "Log Out\n";
-                        String[] info = {distance, logout};
+                        String[] info = {distance, feedback, logout};
                         settingsList = (ListView)findViewById(R.id.settingsList);
                         final ArrayAdapter<String> infoListViewAdapter = new ArrayAdapter<String>(ProfileSettings.this, android.R.layout.simple_list_item_1, info);
                         settingsList.setAdapter(infoListViewAdapter);
@@ -97,3 +98,4 @@ public class ProfileSettings extends AppCompatActivity {
         dialogSettings.show(fm, "");
         return dialogSettings;
     }
+}
