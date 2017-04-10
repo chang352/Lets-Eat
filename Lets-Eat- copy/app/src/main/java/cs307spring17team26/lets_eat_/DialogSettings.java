@@ -75,7 +75,7 @@ public class DialogSettings extends DialogFragment {
             @Override
             public void onClick(View v) {
                 if (position==1) {
-                    //send feedback to message
+                    //send user feedback
                 }
                 else if (position==2) {
                     //logout(), return back to login screen, logging out of account, clears all activities in the
