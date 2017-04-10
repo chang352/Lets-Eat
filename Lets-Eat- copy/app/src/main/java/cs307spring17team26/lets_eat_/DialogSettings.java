@@ -1,6 +1,7 @@
 package cs307spring17team26.lets_eat_;
 
 import android.support.v4.app.DialogFragment;
+import android.text.InputType;
 import android.view.View;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -48,7 +49,6 @@ public class DialogSettings extends DialogFragment {
         cancelButton = (Button) rootView.findViewById(R.id.cancelButton);
         changeinfoText = (TextView) rootView.findViewById(R.id.changeInfoText);
         errorView = (TextView) rootView.findViewById(R.id.errorView);
-        final String message = "Invalid: Must be a number.";
 
         Bundle bundle = this.getArguments();
         if (bundle!=null) {
@@ -59,10 +59,10 @@ public class DialogSettings extends DialogFragment {
         editInfo.setFocusableInTouchMode(true);
         switch (position) {
             case 0:
-                changeinfoText.setText("Distance Range"); break;
-            /*case 1:
-                changeinfoText.setText("Age Range"); break;*/
+                changeinfoText.setText("Distance Range"); editInfo.setInputType(InputType.TYPE_CLASS_NUMBER); break;
             case 1:
+                changeinfoText.setText("Feedback"); break;
+            case 2:
                 changeinfoText.setText("Are you sure you want to log out?");
                 editInfo.setFocusable(false);
                 okButton.setText("YES");
@@ -75,6 +75,9 @@ public class DialogSettings extends DialogFragment {
             @Override
             public void onClick(View v) {
                 if (position==1) {
+                    //send feedback to message
+                }
+                else if (position==2) {
                     //logout(), return back to login screen, logging out of account, clears all activities in the
                     Intent intent = new Intent(getActivity(), LoginAccountActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -97,18 +100,8 @@ public class DialogSettings extends DialogFragment {
                             public void onResponse(JSONObject response) {
                                 try {
                                     if (position==0) {
-                                        if (newText.matches("-?\\d+(\\.\\d+)?")) {
-                                            response.put("maxRange", Integer.parseInt(newText));
-                                        } else {
-                                            //errorView.setText(message);
-                                        }
-                                    } /*else if (position==1) {
-                                        if (newText.matches("-?\\d+(\\.\\d+)?")) {
-                                            response.put("ageRange", Integer.parseInt(newText));
-                                        } else {
-                                            //errorView.setText(message);
-                                        }
-                                    }*/
+                                        response.put("maxRange", Integer.parseInt(newText));
+                                    }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
