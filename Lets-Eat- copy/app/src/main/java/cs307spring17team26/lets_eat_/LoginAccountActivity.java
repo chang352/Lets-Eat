@@ -1,5 +1,6 @@
 package cs307spring17team26.lets_eat_;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -7,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -31,21 +33,28 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.content.Context;
 import android.view.inputmethod.InputMethodManager;
+
 import com.android.volley.*;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+
 import org.json.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.lang.String;
 
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginAccountActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class LoginAccountActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, LocationListener {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -71,6 +80,10 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
     private View mLoginFormView;
     private TextView forgotPasswordTextView;
     private TextView newAccountTextView;
+    private double latitude = 0;
+    private double longitude = 0;
+    private LocationManager locationManager;
+    private Location location;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -79,6 +92,24 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
         // Set up the login form.
         emailEditText = (AutoCompleteTextView) findViewById(R.id.emailEditText);
         populateAutoComplete();
+
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            System.out.println("permission");
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+        location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        longitude = location.getLongitude();
+        latitude = location.getLatitude();
 
         passwordEditText = (EditText) findViewById(R.id.passwordEditText);
         passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -96,16 +127,15 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                //hide the keyboard after button click
                 //attempt to login
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                 attemptLogin();
             }
         });
 
         //if user forgets password
-        forgotPasswordTextView = (TextView)findViewById(R.id.forgotPasswordTextView);
+        forgotPasswordTextView = (TextView) findViewById(R.id.forgotPasswordTextView);
         forgotPasswordTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -177,6 +207,7 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
      * errors are presented and no actual login attempt is made.
      */
     View focusView;
+
     private void attemptLogin() {
         if (mAuthTask != null) {
             return;
@@ -210,7 +241,7 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
             focusView = emailEditText;
             cancel = true;
         }
-        final TextView test = (TextView)findViewById(R.id.textView2);
+        final TextView test = (TextView) findViewById(R.id.textView2);
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -221,8 +252,11 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
             showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
+            //getLocation();
             //code for sending user input and checking if matches info in database
-            Context c  = getApplication();
+            //JSONObject p = new JSONObject();
+            //try {p.put("location", longitude); p.accumulate("location", latitude);} catch (Exception e) {e.printStackTrace();}
+            Context c = getApplication();
             RequestQueue queue = Volley.newRequestQueue(c);
             JsonObjectRequest j = new JsonObjectRequest(
                     Request.Method.GET, "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/users/" + email, null,
@@ -232,6 +266,7 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
                             //response is user's interaction in json format, change text
                             if (response.toString().contains(email)) {
                                 test.setText(response.toString());
+                                putLocation(longitude, latitude, email);
                                 Intent intent = new Intent(LoginAccountActivity.this, ApplicationActivity.class);
                                 Bundle account = new Bundle();
                                 account.putCharSequence("email", email);
@@ -255,6 +290,36 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
             });
             queue.add(j);
         }
+    }
+
+    public void putLocation(final double longitude, final double latitude, String email) {
+        JSONObject ob = new JSONObject();
+        try {
+            ob.put("location", longitude);
+            ob.accumulate("location", latitude);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Context c  = getApplication();
+        RequestQueue queue = Volley.newRequestQueue(c);
+        JsonObjectRequest j = new JsonObjectRequest(
+                Request.Method.PUT, "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/users/" + email, ob,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            response.put("location", longitude);
+                            response.accumulate("location", latitude);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+        queue.add(j);
     }
 
     private boolean isEmailValid(String email) {
@@ -346,6 +411,25 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
         emailEditText.setAdapter(adapter);
     }
 
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
 
     private interface ProfileQuery {
         String[] PROJECTION = {
@@ -414,3 +498,4 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
         }
     }
 }
+
