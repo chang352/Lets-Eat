@@ -35,8 +35,8 @@ public class SendMatchRequest extends Fragment {
     }
     */
 
-    public void testSend(String user1, String user2, SendMatchRequest sendMatchRequest, Context context) {
-        sendMatchRequest.sendMatchRequest(user1, user2, context);
+    public void testSend(String user1Period, String user2Period, String user1Und, String user2Und, SendMatchRequest sendMatchRequest, Context context) {
+        sendMatchRequest.sendMatchRequest(user1Period, user2Period, user1Und, user2Und, context);
         System.out.println("Match request sent");
     }
 
@@ -44,8 +44,8 @@ public class SendMatchRequest extends Fragment {
         System.out.println(sendMatchRequest.canChat(user1, user2, context));
     }
 
-    public void testAccept(String user1, String user2, SendMatchRequest sendMatchRequest, Context context) {
-        sendMatchRequest.acceptMatch(user1, user2, context);
+    public void testAccept(String user1Period, String user2Period, String user1Und, String user2Und, SendMatchRequest sendMatchRequest, Context context) {
+        sendMatchRequest.acceptMatch(user1Period, user2Period, user1Und, user2Und, context);
         System.out.println("sokola accepts user1");
     }
 
@@ -53,9 +53,9 @@ public class SendMatchRequest extends Fragment {
         System.out.println(sendMatchRequest.canChat(user1, user2, context) + " :)");
     }
 
-    public void testDeny(String user1, String user2, SendMatchRequest sendMatchRequest, Context context) {
-        sendMatchRequest.denyMatch(user1, user2, context);
-        sendMatchRequest.denyMatch(user2, user1, context);
+    public void testDeny(String user1Period, String user2Period, String user1Und, String user2Und, SendMatchRequest sendMatchRequest, Context context) {
+        sendMatchRequest.denyMatch(user1Period, user2Period, user1Und, user2Und, context);
+        sendMatchRequest.denyMatch(user2Period, user1Period, user2Und, user1Und, context);
         System.out.println("Match denied");
     }
 
@@ -83,22 +83,22 @@ public class SendMatchRequest extends Fragment {
         queue.add(jsonObjectRequest);
     }
 
-    public void sendMatchRequest(final String user1, final String user2, final Context context) {
+    public void sendMatchRequest(final String user1Period, final String user2Period, final String user1Und, final String user2Und, final Context context) {
         RequestQueue queue = Volley.newRequestQueue(context);
 
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url + user1, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url + user1Period, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
                 try {
-                    if (response.getInt(user2) <= 0) {
+                    //if (response.getInt(user2) <= 0) {
 
                         JSONObject newObject = new JSONObject();
-                        newObject.put(user2, 1);
-                        putData(user1, user2, newObject, context);
+                        newObject.put(user2Und, 1);
+                        putData(user1Period, user2Und, newObject, context);
 
-                    }
+                    //}
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -111,18 +111,41 @@ public class SendMatchRequest extends Fragment {
         });
 
         queue.add(jsonObjectRequest);
+        JsonObjectRequest jsonObjectRequest1 = new JsonObjectRequest(Request.Method.GET, url + user2Period, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+                    //if (response.getInt(user2) <= 0) {
+
+                    JSONObject newObject = new JSONObject();
+                    newObject.put(user1Und, 0);
+                    putData(user2Period, user1Und, newObject, context);
+
+                    //}
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        queue.add(jsonObjectRequest1);
     }
 
-    public void acceptMatch(final String user1, final String user2, final Context context) {
+    public void acceptMatch(final String user1Period, final String user2Period, final String user1Und, final String user2Und, final Context context) {
         RequestQueue queue = Volley.newRequestQueue(context);
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url + user1, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url + user1Period, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
                     JSONObject newObject = new JSONObject();
-                    newObject.put(user2, 2);
-                    putData(user1, user2, newObject, context);
+                    newObject.put(user2Und, 2);
+                    putData(user1Period, user2Und, newObject, context);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -135,19 +158,38 @@ public class SendMatchRequest extends Fragment {
         });
 
         queue.add(jsonObjectRequest);
-    }
-
-    public void denyMatch(final String user1, final String user2, final Context context) {
-        RequestQueue queue = Volley.newRequestQueue(context);
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url + user1, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest1 = new JsonObjectRequest(Request.Method.GET, url + user2Period, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    response.put(user2, -1);
                     JSONObject newObject = new JSONObject();
-                    newObject.put(user2, -1);
-                    putData(user1, user2, newObject, context);
+                    newObject.put(user1Und, 2);
+                    putData(user2Period, user1Und, newObject, context);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        queue.add(jsonObjectRequest1);
+    }
+
+    public void denyMatch(final String user1Period, final String user2Period, final String user1Und, final String user2Und, final Context context) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url + user1Period, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    response.put(user2Und, -1);
+                    JSONObject newObject = new JSONObject();
+                    newObject.put(user2Und, -1);
+                    putData(user1Period, user2Und, newObject, context);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -160,6 +202,26 @@ public class SendMatchRequest extends Fragment {
         });
 
         queue.add(jsonObjectRequest);
+        JsonObjectRequest jsonObjectRequest1 = new JsonObjectRequest(Request.Method.GET, url + user2Period, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    response.put(user1Und, -1);
+                    JSONObject newObject = new JSONObject();
+                    newObject.put(user1Und, -1);
+                    putData(user2Period, user1Und, newObject, context);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        queue.add(jsonObjectRequest1);
     }
 
     public JSONObject retrievePotentialMatches(final String user1, Context context) {
