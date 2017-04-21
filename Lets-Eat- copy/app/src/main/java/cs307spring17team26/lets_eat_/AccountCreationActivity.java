@@ -1,7 +1,14 @@
 package cs307spring17team26.lets_eat_;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.media.MediaBrowserCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,7 +32,7 @@ import org.json.JSONException;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class AccountCreationActivity extends AppCompatActivity {
+public class AccountCreationActivity extends AppCompatActivity implements LocationListener {
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -57,16 +64,21 @@ public class AccountCreationActivity extends AppCompatActivity {
     private TextView existingAccountTextView;
     private Button createAccountButton;
     private TextView errorTextView;
+    private double longitude = 0.0;
+    private double latitude = 0.0;
+    private LocationManager locationManager;
+    private Location location;
 
     //checks if password has at least 5 characters, 1 capital letters, and 1 number
     public boolean isLegalPassword(String input) {
-        if (input.length()<=5) return false; //length at least 5 characters
+        if (input.length() <= 5) return false; //length at least 5 characters
         if (!input.matches(".*[A-Z].*")) return false; //need at least 1 capital letter
         if (!input.matches(".*\\d+.*")) return false; //need at least 1 number
         return true;
     }
 
-View focusView;
+    View focusView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +103,24 @@ View focusView;
         passwordTextView.setText("");
         reenterTextView.setText("");
         errorTextView.setText("");
+
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            System.out.println("permission");
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+        location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        longitude = location.getLongitude();
+        latitude = location.getLatitude();
 
         //if user has existing account, goes back to login account UI activity, login UI is main page
         existingAccountTextView.setOnClickListener(new View.OnClickListener() {
@@ -179,17 +209,17 @@ View focusView;
 
     public void makeNewAccount(final String email, String password, final TextView errorTextView) {
         //make users in database
+        //getLocation();
         final JSONObject object = new JSONObject();
         try {
             object.put("_id", email);
             object.put("name", "Name");
             object.put("age", -1);
-            object.put("location", 0.0);
-            object.accumulate("location", 0.0);
+            object.put("location", longitude);
+            object.accumulate("location", latitude);
             object.put("gender", "Gender");
             object.put("bio", "This is my bio!");
             object.put("maxRange", -1);
-            //object.put("hometown", "Hometown");
         } catch(JSONException e) {
             errorTextView.setText("Error occurred when creating your account. Please try again.");
             return;
@@ -222,8 +252,8 @@ View focusView;
             errorTextView.setText("Error occurred when creating your account. Please try again.");
             return;
         }
-        Context c2  = getApplication();
-        RequestQueue queue2 = Volley.newRequestQueue(c2);
+        //Context c2  = getApplication();
+        //RequestQueue queue2 = Volley.newRequestQueue(c2);
         JsonObjectRequest j2 = new JsonObjectRequest(
                 Request.Method.POST, "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/account/" + email, object2,
                 new Response.Listener<JSONObject>() {
@@ -240,7 +270,7 @@ View focusView;
             public void onErrorResponse(VolleyError error) {
             }
         });
-        queue2.add(j2);
+        queue.add(j2);
         //make chat in database
         final JSONObject object3 = new JSONObject();
         try {
@@ -249,8 +279,8 @@ View focusView;
             errorTextView.setText("Error occurred when creating your account. Please try again.");
             return;
         }
-        Context c3  = getApplication();
-        RequestQueue queue3 = Volley.newRequestQueue(c3);
+        //Context c3  = getApplication();
+        //RequestQueue queue3 = Volley.newRequestQueue(c3);
         JsonObjectRequest j3 = new JsonObjectRequest(
                 Request.Method.POST, "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/chat/" + email, object3,
                 new Response.Listener<JSONObject>() {
@@ -267,7 +297,7 @@ View focusView;
             public void onErrorResponse(VolleyError error) {
             }
         });
-        queue3.add(j3);
+        queue.add(j3);
         //make matches in database
         final JSONObject object4 = new JSONObject();
         try {
@@ -276,8 +306,8 @@ View focusView;
             errorTextView.setText("Error occurred when creating your account. Please try again.");
             return;
         }
-        Context c4  = getApplication();
-        RequestQueue queue4 = Volley.newRequestQueue(c2);
+        //Context c4  = getApplication();
+        //RequestQueue queue4 = Volley.newRequestQueue(c4);
         JsonObjectRequest j4 = new JsonObjectRequest(
                 Request.Method.POST, "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/matches/" + email, object4,
                 new Response.Listener<JSONObject>() {
@@ -294,7 +324,7 @@ View focusView;
             public void onErrorResponse(VolleyError error) {
             }
         });
-        queue4.add(j4);
+        queue.add(j4);
         Intent intent = new Intent(AccountCreationActivity.this, ProfileSetup.class);
         Bundle bundle = new Bundle();
         bundle.putCharSequence("email", email);
@@ -406,5 +436,25 @@ View focusView;
     private void delayedHide(int delayMillis) {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 }
