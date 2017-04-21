@@ -27,6 +27,7 @@ import org.json.JSONObject;
 public class ProfileMatches extends AppCompatActivity {
 
     private CharSequence email;
+    private CharSequence emailMatch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,25 +37,17 @@ public class ProfileMatches extends AppCompatActivity {
 
         Bundle account = getIntent().getExtras();
         if (account!=null) {
-            email = account.getCharSequence("email");
+            email = account.getCharSequence("emailUser");
+            emailMatch = account.getCharSequence("emailMatch");
         }
 
+        final SendMatchRequest smr = new SendMatchRequest();
         ImageView imageView = (ImageView)findViewById(R.id.matchProfilePic);
         final ListView infoListView = (ListView)findViewById(R.id.matchInfo);
-        FloatingActionButton deleteButton = (FloatingActionButton)findViewById(R.id.deleteButton);
         FloatingActionButton closeProfileButton = (FloatingActionButton)findViewById(R.id.closeProfileButton);
         FloatingActionButton chatButton = (FloatingActionButton)findViewById(R.id.chatButton);
         FloatingActionButton restaurantButton = (FloatingActionButton)findViewById(R.id.restaurantButton);
         TextView test = (TextView)findViewById(R.id.test);
-
-        //removing the match, closing the activity and going back to match UI page
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // code for to remove match
-                finish();
-            }
-        });
 
         //closing the activity, closing the match profile and going back to matches UI page
         closeProfileButton.setOnClickListener(new View.OnClickListener() {
@@ -68,7 +61,7 @@ public class ProfileMatches extends AppCompatActivity {
         restaurantButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+
             }
         });
 
