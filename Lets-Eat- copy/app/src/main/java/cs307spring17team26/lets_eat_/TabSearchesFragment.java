@@ -66,35 +66,40 @@ public class TabSearchesFragment extends Fragment {
                                 public void onResponse(JSONObject response) {
                                             System.out.println(response);
                                             final JSONArray array = response.names();
-                                            final String[] names = new String[response.length()-1];
-                                            for (int i = 1; i<response.length(); i++) {
+                                            final String[] names = new String[response.length()];
+                                            final String[]namesEmail = new String[response.length()];
+                                            int namesCount = 0;
+                                            for (int i = 0; i<response.length(); i++) {
                                                 try {
                                                     JSONObject temp = response.getJSONObject(array.getString(i));
-                                                    names[i-1] = temp.getString("name");
-                                                    System.out.println(names[i-1]);
+                                                    if (!temp.getString("_id").equals(email)) {
+                                                        names[namesCount] = temp.getString("name");
+                                                        namesEmail[namesCount] = temp.getString("_id");
+                                                        namesCount++;
+                                                    }
                                                 } catch (JSONException e) {
                                                     e.printStackTrace();
                                                 }
                                             }
-                                            System.out.println(names[0]);
-                                            ArrayAdapter<String> searchListsViewAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, names);
-                                            System.out.println(names[0]);
-                                            searchesListView.setAdapter(searchListsViewAdapter);
-                                            System.out.println(names[0]);
-                                            try {
-                                                System.out.println(array.getString(0));
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
+                                            final String[] namesFinal = new String[namesCount];
+                                            for (int i = 0; i<namesCount; i++) {
+                                                namesFinal[i] = names[i];
                                             }
+                                            final String[] namesEmailFinal = new String[namesCount];
+                                            for (int i = 0; i<namesCount; i++) {
+                                                namesEmailFinal[i] = namesEmail[i];
+                                            }
+                                            //System.out.println(names[0]);
+                                            ArrayAdapter<String> searchListsViewAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, namesFinal);
+                                            //System.out.println(names[0]);
+                                            searchesListView.setAdapter(searchListsViewAdapter);
                                             searchesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                                 @Override
                                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                                     Intent intent = new Intent(getActivity(), ProfileSearches.class);
-                                                    try {
-                                                        intent.putExtra("email", array.getString(position+1));
-                                                    } catch (JSONException e) {
-                                                        e.printStackTrace();
-                                                    }
+                                                    intent.putExtra("emailUser", email);
+                                                    intent.putExtra("emailPotential", namesEmailFinal[position]);
+                                                    intent.putExtra("status", "request");
                                                     getActivity().startActivity(intent);
                                                 }
                                             });
