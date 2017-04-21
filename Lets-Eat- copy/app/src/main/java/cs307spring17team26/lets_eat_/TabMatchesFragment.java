@@ -28,13 +28,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 public class TabMatchesFragment extends Fragment {
 
     public TabMatchesFragment() {}
 
     private CharSequence email;
     private ListView matchesListView;
-    private FloatingActionButton historyButton;
+    private ListView listView1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,6 +48,7 @@ public class TabMatchesFragment extends Fragment {
         }
 
         matchesListView = (ListView) rootView.findViewById(R.id.matchesListView);
+        listView1 = (ListView) rootView.findViewById(R.id.listView1);
 
         final Context c = getActivity().getApplication();
         final RequestQueue queue = Volley.newRequestQueue(c);
@@ -61,6 +64,7 @@ public class TabMatchesFragment extends Fragment {
                             try {
                                 if (response.getInt(array.getString(i)) == 2) {
                                     emailList[j] = array.getString(i);
+                                    emailList[j] = emailList[j].replace("_", ".");
                                     j++;
                                 }
                             } catch (JSONException e) {
@@ -68,7 +72,7 @@ public class TabMatchesFragment extends Fragment {
                             }
                         }
                         final String[] nameList = new String[emailList.length];
-                        getName(emailList, nameList, matchesListView);
+                        getName(emailList, nameList, matchesListView, 2);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -77,16 +81,46 @@ public class TabMatchesFragment extends Fragment {
             }
         });
         queue.add(j);
+
+        JsonObjectRequest j1 = new JsonObjectRequest(
+                Request.Method.GET, "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/matches/" + email, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        JSONArray array = response.names();
+                        final String[] emailList = new String[array.length()];
+                        int j = 0;
+                        for (int i = 1; i < array.length(); i++) {
+                            try {
+                                if (response.getInt(array.getString(i)) == 1) {
+                                    emailList[j] = array.getString(i);
+                                    emailList[j] = emailList[j].replace("_", ".");
+                                    j++;
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        final String[] nameList = new String[emailList.length];
+                        getName(emailList, nameList, listView1, 1);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        queue.add(j1);
         return rootView;
     }
 
-    public void getName(final String[] emailArray, final String[] nameArray, final ListView matchesListView) {
+    public void getName(final String[] emailArray, final String[] nameArray, final ListView matchesListView, final int num) {
         Context c = getActivity().getApplication();
-        RequestQueue queue1 = Volley.newRequestQueue(c);
+        final RequestQueue queue1 = Volley.newRequestQueue(c);
         for (int k = 0; k < emailArray.length; k++) {
             if (emailArray[k] == null) break;
             final int finalK = k;
-            JsonObjectRequest r = new JsonObjectRequest(
+            final JsonObjectRequest r = new JsonObjectRequest(
                     Request.Method.GET, "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/users/" + emailArray[k], null,
                     new Response.Listener<JSONObject>() {
                         @Override
@@ -106,15 +140,30 @@ public class TabMatchesFragment extends Fragment {
                             //searchesListView = (ListView)findViewById(R.id.searchesListView);
                             final ArrayAdapter<String> matchListsViewAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, correct);
                             //System.out.println(correct[0]);
-                            matchesListView.setAdapter(matchListsViewAdapter);
-                            matchesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                    Intent intent = new Intent(getActivity(), ProfileMatches.class);
-                                    intent.putExtra("email", emailArray[position]);
-                                    getActivity().startActivity(intent);
-                                }
-                            });
+                            if (num==2) {
+                                matchesListView.setAdapter(matchListsViewAdapter);
+                                matchesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                        Intent intent = new Intent(getActivity(), ProfileMatches.class);
+                                        intent.putExtra("emailMatch", emailArray[position]);
+                                        intent.putExtra("emailUser", email);
+                                        getActivity().startActivity(intent);
+                                    }
+                                });
+                            } else if (num==1) {
+                                listView1.setAdapter(matchListsViewAdapter);
+                                listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                        Intent intent = new Intent(getActivity(), ProfileSearches.class);
+                                        intent.putExtra("emailPotential", emailArray[position]);
+                                        intent.putExtra("emailUser", email);
+                                        intent.putExtra("status", "pending");
+                                        getActivity().startActivity(intent);
+                                    }
+                                });
+                            }
                         }
                     }, new Response.ErrorListener() {
                 @Override
