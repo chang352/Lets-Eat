@@ -22,7 +22,9 @@ import org.json.JSONObject;
 
 public class ProfileSearches extends AppCompatActivity {
 
-    private CharSequence email;
+    private CharSequence emailPotential;
+    private CharSequence emailUser;
+    private CharSequence status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +34,12 @@ public class ProfileSearches extends AppCompatActivity {
 
         Bundle account = getIntent().getExtras();
         if (account!=null) {
-            email = account.getCharSequence("email");
+            emailPotential = account.getCharSequence("emailPotential");
+            emailUser = account.getCharSequence("emailUser");
+            status = account.getCharSequence("status");
         }
 
+        final SendMatchRequest smr = new SendMatchRequest();
         ImageView imageView = (ImageView) findViewById(R.id.searchProfilePic);
         final ListView infoListView = (ListView) findViewById(R.id.searchInfo);
         FloatingActionButton deleteButton = (FloatingActionButton) findViewById(R.id.deleteButton);
@@ -46,6 +51,9 @@ public class ProfileSearches extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // code for to remove profile as potential match
+                String newPEmail  = emailPotential.toString().replace(".", "_");
+                String newUEmail = emailUser.toString().replace(".", "_");
+                smr.denyMatch(emailUser.toString(), emailPotential.toString(), newUEmail, newPEmail, getApplication());
                 finish();
             }
         });
@@ -63,6 +71,13 @@ public class ProfileSearches extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //code for to accept profile as potential match
+                String newPEmail = emailPotential.toString().replace(".", "_");
+                String newUEmail = emailUser.toString().replace(".", "_");
+                if (status.equals("request")) {
+                    smr.sendMatchRequest(emailUser.toString(), emailPotential.toString(), newUEmail, newPEmail, getApplication());
+                } else if (status.equals("pending")) {
+                    smr.acceptMatch(emailUser.toString(), emailPotential.toString(), newUEmail, newPEmail, getApplication());
+                }
                 finish();
             }
         });
@@ -70,7 +85,7 @@ public class ProfileSearches extends AppCompatActivity {
         Context c = getApplication();
         RequestQueue queue = Volley.newRequestQueue(c);
         JsonObjectRequest j = new JsonObjectRequest(
-                Request.Method.GET, "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/users/" + email, null,
+                Request.Method.GET, "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/users/" + emailPotential, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
