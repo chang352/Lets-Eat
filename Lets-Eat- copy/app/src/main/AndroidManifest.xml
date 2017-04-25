@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -34,12 +36,10 @@
             android:name=".ApplicationActivity"
             android:label="Let&apos;s Eat!"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ProfileSettings"
-            android:label="@string/title_activity_profile_settings"
+            android:label=""
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -50,12 +50,20 @@
             android:name=".ProfileMatches"
             android:label=""
             android:screenOrientation="portrait" />
-        <activity android:name=".ChatActivity" />
+        <activity android:name=".ChatActivity"
+            android:screenOrientation="portrait"
+            android:label="Messaging"/>
         <activity
             android:name=".ProfileSetup"
             android:label="Setup Profile"
             android:screenOrientation="portrait"
-            android:theme="@style/FullscreenTheme"></activity>
+            android:theme="@style/FullscreenTheme" />
+        <activity android:name=".ScheduleActivity"
+            android:label="Schedule a Meeting"
+            android:screenOrientation="portrait" />
+        <activity android:name=".RestaurantActivity"
+            android:label="Restaurants Near You"
+            android:screenOrientation="portrait" />
     </application>
 
-</manifest>
+</manifest
