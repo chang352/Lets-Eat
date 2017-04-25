@@ -70,7 +70,7 @@ public class TabProfileFragment extends Fragment{
 
             }
         });
-        final TextView test = (TextView)rootView.findViewById(R.id.textView3);
+        //final TextView test = (TextView)rootView.findViewById(R.id.textView3);
         Context c  = getActivity().getApplicationContext();
         RequestQueue queue = Volley.newRequestQueue(c);
         JsonObjectRequest j = new JsonObjectRequest(
@@ -80,14 +80,14 @@ public class TabProfileFragment extends Fragment{
                     public void onResponse(JSONObject response) {
                         //test.setText("RESPONSE" + response.toString());
                         try {
-                            test.setText("TRY" + response.toString());
+                            //test.setText("TRY" + response.toString());
                             nameString = response.getString("name");
                             age = response.getInt("age");
                             //locationString = response.getString("location");
                             genderString = response.getString("gender");
                             bioString = response.getString("bio");
                         } catch (JSONException e) {
-                            test.setText("CATCH" + response.toString());
+                            //test.setText("CATCH" + response.toString());
                             e.printStackTrace();
                         }
                         String[] info = {nameString, Integer.toString(age), genderString, bioString};
@@ -105,7 +105,7 @@ public class TabProfileFragment extends Fragment{
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                test.setText("ERROR" + error.toString());
+                //test.setText("ERROR" + error.toString());
             }
         });
         queue.add(j);
