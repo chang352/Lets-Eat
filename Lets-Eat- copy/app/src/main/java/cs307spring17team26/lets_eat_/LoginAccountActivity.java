@@ -135,13 +135,13 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
         });
 
         //if user forgets password
-        forgotPasswordTextView = (TextView) findViewById(R.id.forgotPasswordTextView);
+        /*forgotPasswordTextView = (TextView) findViewById(R.id.forgotPasswordTextView);
         forgotPasswordTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
-        });
+        });*/
 
         //if user doesn't have existing account
         newAccountTextView = (TextView) findViewById(R.id.newAccountTextView);
@@ -241,7 +241,7 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
             focusView = emailEditText;
             cancel = true;
         }
-        final TextView test = (TextView) findViewById(R.id.textView2);
+        //final TextView test = (TextView) findViewById(R.id.textView2);
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -265,7 +265,7 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
                         public void onResponse(JSONObject response) {
                             //response is user's interaction in json format, change text
                             if (response.toString().contains(email)) {
-                                test.setText(response.toString());
+                                //test.setText(response.toString());
                                 putLocation(longitude, latitude, email);
                                 Intent intent = new Intent(LoginAccountActivity.this, ApplicationActivity.class);
                                 Bundle account = new Bundle();
@@ -273,7 +273,7 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
                                 intent.putExtras(account);
                                 startActivity(intent);
                             } else {
-                                test.setText(response.toString());
+                                //test.setText(response.toString());
                                 emailEditText.setError(getString(R.string.error_invalid_email));
                                 focusView = emailEditText;
                             }
@@ -281,11 +281,11 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                        //error occurred
-                        //if invalid email, invalid email error message
-                        test.setText(error.toString());
-                        emailEditText.setError(getString(R.string.error_invalid_email));
-                        focusView = emailEditText;
+                    //error occurred
+                    //if invalid email, invalid email error message
+                    //test.setText(error.toString());
+                    emailEditText.setError(getString(R.string.error_invalid_email));
+                    focusView = emailEditText;
                 }
             });
             queue.add(j);
@@ -498,4 +498,3 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
         }
     }
 }
-
