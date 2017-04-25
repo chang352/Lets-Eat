@@ -20,6 +20,7 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import android.content.Intent;
 
 /**
  * Created by nathanchang on 2/28/17.
@@ -108,6 +109,9 @@ public class DialogTabProfile extends DialogFragment {
                     }
                 });
                 queue.add(j);
+                Intent intent = new Intent(getActivity(), ApplicationActivity.class);
+                intent.putExtra("email", email);
+                startActivity(intent);
                 dismiss();
             }
         });
