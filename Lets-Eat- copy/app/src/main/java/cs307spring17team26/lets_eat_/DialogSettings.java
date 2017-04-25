@@ -61,7 +61,7 @@ public class DialogSettings extends DialogFragment {
             case 0:
                 changeinfoText.setText("Distance Range"); editInfo.setInputType(InputType.TYPE_CLASS_NUMBER); break;
             case 1:
-                changeinfoText.setText("Feedback"); break;
+                changeinfoText.setText("Send a Feedback"); break;
             case 2:
                 changeinfoText.setText("Are you sure you want to log out?");
                 editInfo.setFocusable(false);
@@ -76,6 +76,12 @@ public class DialogSettings extends DialogFragment {
             public void onClick(View v) {
                 if (position==1) {
                     //send user feedback
+                    Intent intent = new Intent(Intent.ACTION_SEND);
+                    intent.setType("plain/text");
+                    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"lets.eat3011@gmail.com"});
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "User Feedback");
+                    intent.putExtra(Intent.EXTRA_TEXT, editInfo.getText().toString());
+                    startActivity(intent);
                 }
                 else if (position==2) {
                     //logout(), return back to login screen, logging out of account, clears all activities in the
@@ -83,37 +89,49 @@ public class DialogSettings extends DialogFragment {
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
-                errorView.setText("\n");
-                newText = editInfo.getText().toString();
-                JSONObject ob = new JSONObject();
-                switch (position) {
-                    case 0:try {ob.put("maxRange", newText);} catch (JSONException e) {e.printStackTrace();} break;
-                    //case 1:try {ob.put("ageRange", newText);} catch (JSONException e) {e.printStackTrace();} break;
-                    default: break;
-                }
-                Context c  = getActivity().getApplication();
-                RequestQueue queue = Volley.newRequestQueue(c);
-                JsonObjectRequest j = new JsonObjectRequest(
-                        Request.Method.PUT, "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/users/" + email, ob,
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                try {
-                                    if (position==0) {
-                                        response.put("maxRange", Integer.parseInt(newText));
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
+                else if (position==0) {
+                    errorView.setText("\n");
+                    newText = editInfo.getText().toString();
+                    JSONObject ob = new JSONObject();
+                    switch (position) {
+                        case 0:
+                            try {
+                                ob.put("maxRange", newText);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
+                            break;
+                        //case 1:try {ob.put("ageRange", newText);} catch (JSONException e) {e.printStackTrace();} break;
+                        default:
+                            break;
                     }
-                });
-                queue.add(j);
-                dismiss();
+                    Context c = getActivity().getApplication();
+                    RequestQueue queue = Volley.newRequestQueue(c);
+                    JsonObjectRequest j = new JsonObjectRequest(
+                            Request.Method.PUT, "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/users/" + email, ob,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    try {
+                                        if (position == 0) {
+                                            response.put("maxRange", Integer.parseInt(newText));
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                        }
+                    });
+                    queue.add(j);
+                    Intent intent = new Intent(getActivity(), ProfileSettings.class);
+                    intent.putExtra("email", email);
+                    startActivity(intent);
+                    dismiss();
+                }
             }
         });
         cancelButton.setOnClickListener(new View.OnClickListener() {
