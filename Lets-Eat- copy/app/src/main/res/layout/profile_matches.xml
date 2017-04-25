@@ -4,20 +4,58 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#0099cc"
-    tools:context="cs307spring17team26.lets_eat_.ProfileMatchesBackup">
+    tools:context="cs307spring17team26.lets_eat_.ProfileMatchesBackup"
+    android:id="@+id/frame">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
          TextureView, etc. -->
     <TextView
-        android:id="@+id/fullscreen_content"
+        android:text="TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:id="@+id/meeting"
+        android:gravity="center"
+        android:layout_marginTop="200dp" />
+
+    <Button
+        android:text="ACCEPT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:id="@+id/acceptButton"
+        android:layout_marginTop="250dp"
+        android:layout_marginLeft="30dp" />
+
+    <Button
+        android:text="DELETE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:id="@+id/deleteButton"
+        android:layout_marginTop="250dp"
+        android:layout_marginLeft="130dp" />
+
+    <Button
+        android:text="BACK"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:id="@+id/back"
+        android:layout_marginTop="250dp"
+        android:layout_marginLeft="230dp" />
+
+    <TextView
+        android:id="@+id/text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
         android:keepScreenOn="true"
-        android:text="@string/dummy_content"
+        android:text="\n"
         android:textColor="#33b5e5"
-        android:textSize="50sp"
+        android:visibility="visible"
+        android:textSize="36sp"
         android:textStyle="bold" />
 
     <!-- This FrameLayout insets its children based on system windows using
@@ -26,7 +64,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        android:background="#93c580">
+        android:visibility="visible"
+        android:background="#93c580"
+        android:id="@+id/layout">
 
         <LinearLayout
             android:id="@+id/fullscreen_content_controls"
@@ -36,6 +76,7 @@
             android:layout_gravity="bottom|center_horizontal"
             android:background="@color/black_overlay"
             android:orientation="horizontal"
+            android:visibility="visible"
             tools:ignore="UselessParent">
 
         </LinearLayout>
@@ -45,26 +86,8 @@
             android:layout_height="wrap_content"
             android:src="@drawable/person_icon"
             android:id="@+id/matchProfilePic"
+            android:visibility="visible"
             android:layout_marginTop="-10dp" />
-
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="188dp"
-            android:layout_marginTop="264dp"
-            android:id="@+id/matchInfo"
-            android:divider="@color/black_overlay"
-            android:dividerHeight="0.5dp" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:layout_width="54dp"
-            android:layout_height="50dp"
-            android:clickable="true"
-            app:fabSize="mini"
-            android:src="@android:drawable/arrow_down_float"
-            android:id="@+id/closeProfileButton"
-            android:layout_marginLeft="155dp"
-            android:layout_marginTop="458dp"
-            app:elevation="5dp" />
 
         <android.support.design.widget.FloatingActionButton
             android:layout_width="54dp"
@@ -72,6 +95,7 @@
             android:clickable="true"
             app:fabSize="mini"
             android:src="@android:drawable/stat_notify_chat"
+            android:visibility="visible"
             android:id="@+id/chatButton"
             android:background="@drawable/design_fab_background"
             app:elevation="5dp"
@@ -85,15 +109,42 @@
             android:src="@android:drawable/ic_menu_directions"
             android:id="@+id/restaurantButton"
             app:elevation="5dp"
+            android:visibility="visible"
             android:layout_marginTop="458dp"
             app:fabSize="mini"
             android:layout_marginLeft="10dp" />
 
-        <TextView
-            android:text="TextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/test" />
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="54dp"
+            android:layout_height="50dp"
+            android:clickable="true"
+            app:fabSize="mini"
+            android:src="@android:drawable/checkbox_on_background"
+            android:visibility="visible"
+            android:id="@+id/acceptMeeting"
+            android:layout_marginTop="458dp"
+            android:layout_marginLeft="105dp" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="54dp"
+            android:layout_height="50dp"
+            android:clickable="true"
+            app:fabSize="mini"
+            android:src="@android:drawable/arrow_down_float"
+            android:id="@+id/closeProfileButton"
+            android:visibility="visible"
+            android:layout_marginLeft="205dp"
+            android:layout_marginTop="458dp"
+            app:elevation="5dp" />
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="188dp"
+            android:layout_marginTop="264dp"
+            android:id="@+id/matchInfo"
+            android:divider="@color/black_overlay"
+            android:visibility="visible"
+            android:dividerHeight="0.5dp" />
 
     </FrameLayout>
 
