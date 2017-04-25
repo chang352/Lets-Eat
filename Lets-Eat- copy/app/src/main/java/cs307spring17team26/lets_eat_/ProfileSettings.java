@@ -49,9 +49,9 @@ public class ProfileSettings extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        String distance = "Distance Range\n" + Integer.toString(maxRange);
+                        String distance = "Distance Range\n" + maxRange;
                         //String age = "Age Range\n" + Integer.toString(ageRange);
-                        String feedback = "Feedback\n";
+                        String feedback = "Send a Feedback\n";
                         String logout = "Log Out\n";
                         String[] info = {distance, feedback, logout};
                         settingsList = (ListView)findViewById(R.id.settingsList);
