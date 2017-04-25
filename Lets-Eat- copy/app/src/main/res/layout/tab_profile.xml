@@ -40,15 +40,6 @@
         android:layout_alignParentStart="true" />
 
     <TextView
-        android:text="TextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView3"
-        android:layout_above="@+id/infoListView"
-        android:layout_alignEnd="@+id/profilePicButton"
-        android:layout_marginBottom="33dp" />
-
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
