@@ -92,7 +92,7 @@ public class TabMatchesFragment extends Fragment {
                         int j = 0;
                         for (int i = 1; i < array.length(); i++) {
                             try {
-                                if (response.getInt(array.getString(i)) == 1) {
+                                if (response.getInt(array.getString(i)) == 0) {
                                     emailList[j] = array.getString(i);
                                     emailList[j] = emailList[j].replace("_", ".");
                                     j++;
