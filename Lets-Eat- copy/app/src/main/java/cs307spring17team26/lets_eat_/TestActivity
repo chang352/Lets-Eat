@@ -1,0 +1,151 @@
+package cs307spring17team26.lets_eat_;
+
+import android.content.Context;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ListView;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
+public class TestActivity extends AppCompatActivity {
+
+    ArrayList<String> messages = new ArrayList<>();
+    String message = "";
+    String currUser = "";
+    String curr_User = "";
+    String toUser = "";
+    String to_User = "";
+    int length = 0;
+    int nextLength = 0;
+    private static final String url = "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/chat/";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_test);
+
+        Bundle account = getIntent().getExtras();
+        if (account!=null) {
+            currUser = (String) account.getCharSequence("emailUser");
+            curr_User = currUser.replace(".", "_");
+            toUser = (String) account.getCharSequence("emailMatch");
+            to_User = toUser.replace(".", "_");
+        }
+
+        RequestQueue queue = Volley.newRequestQueue(getApplication());
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url + currUser, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                System.out.println("here + :)");
+                ListView listView = (ListView)findViewById(R.id.list);
+                JSONArray messageArray = new JSONArray();
+                try {
+                    messageArray = response.getJSONArray(to_User);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                for (int i = 0; i < messageArray.length(); i++) {
+                    try {
+                        messages.add(i, messageArray.getString(i));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                ArrayAdapter arrayAdapter = new ArrayAdapter(TestActivity.this, R.layout.row_chat, R.id.text, messages);
+                listView.setAdapter(arrayAdapter);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        queue.add(jsonObjectRequest);
+
+        FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText input = (EditText)findViewById(R.id.input);
+
+                RequestQueue queue = Volley.newRequestQueue(getApplication());
+
+                message = currUser + ": " + input.getText().toString();
+
+                JsonObjectRequest jsonObjectRequest1 = new JsonObjectRequest(Request.Method.GET, url + currUser, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray newArray = new JSONArray();
+                            /*if (response.getJSONArray(to_User)!=null) {
+                                response.accumulate(to_User, message);
+                                newArray = response.getJSONArray(to_User);
+                                System.out.println(response.toString());
+                            } else {
+                                newArray.put(message);
+                            }*/
+                            try {
+                                newArray = response.getJSONArray(to_User);
+                                response.accumulate(to_User, message);
+                                newArray = response.getJSONArray(to_User);
+                                System.out.println(response.toString());
+                            } catch (Exception e){
+                                newArray.put(message);
+                            }
+                            System.out.println(newArray.toString());
+                            JSONObject currObject = new JSONObject();
+                            currObject.put(to_User, newArray);
+                            putChat(currUser, to_User, currObject, getApplication());
+                            JSONObject otherObject = new JSONObject();
+                            otherObject.put(curr_User, newArray);
+                            putChat(toUser, curr_User, otherObject, getApplication());
+                            finish();
+                            startActivity(getIntent());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                });
+                queue.add(jsonObjectRequest1);
+                input.setText("");
+            }
+        });
+    }
+
+    public void putChat(final String user1, final String user2, JSONObject response, Context context) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url + user1, response, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        queue.add(jsonObjectRequest);
+    }
+}
