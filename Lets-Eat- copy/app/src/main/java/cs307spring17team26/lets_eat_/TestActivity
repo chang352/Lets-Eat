@@ -114,6 +114,7 @@ public class TestActivity extends AppCompatActivity {
                             JSONObject otherObject = new JSONObject();
                             otherObject.put(curr_User, newArray);
                             putChat(toUser, curr_User, otherObject, getApplication());
+                            Notification.postNum(getApplication(), toUser, 1, "chatNotification");
                             finish();
                             startActivity(getIntent());
                         } catch (JSONException e) {
