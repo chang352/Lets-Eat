@@ -1,5 +1,6 @@
 package cs307spring17team26.lets_eat_;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
@@ -76,7 +77,10 @@ public class ProfileSettings extends AppCompatActivity {
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent intent = new Intent(getApplication(), ApplicationActivity.class);
+                intent.putExtra("email", email);
+                startActivity(intent);
+                //finish();
             }
         });
     }
