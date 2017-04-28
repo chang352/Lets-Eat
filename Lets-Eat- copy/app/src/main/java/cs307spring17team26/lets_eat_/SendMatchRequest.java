@@ -97,6 +97,7 @@ public class SendMatchRequest extends Fragment {
                         JSONObject newObject = new JSONObject();
                         newObject.put(user2Und, 1);
                         putData(user1Period, user2Und, newObject, context);
+                    Notification.postNum(context, user2Period, 1, "matchNotification");
 
                     //}
                 } catch (JSONException e) {
