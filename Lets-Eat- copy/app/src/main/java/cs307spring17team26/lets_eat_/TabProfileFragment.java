@@ -32,7 +32,7 @@ import android.widget.TextView;
 public class TabProfileFragment extends Fragment{
 
     public TabProfileFragment() {
-        emailString = "";
+        //emailString = "";
         nameString = "";
         age = -1;
         locationString = "";
@@ -44,7 +44,7 @@ public class TabProfileFragment extends Fragment{
     private ImageButton profilePicButton;
     private FloatingActionButton settingsButton;
     private CharSequence email;
-    private String emailString;
+    //private String emailString;
     private String nameString;
     private int age;
     private String locationString;
@@ -60,8 +60,10 @@ public class TabProfileFragment extends Fragment{
         Bundle account = this.getArguments();
         if (account!=null) {
             email = account.getCharSequence("email");
-            emailString = email.toString();
+            //emailString = email.toString();
         }
+
+        Notification.sendNotifications(getActivity().getApplication(), email.toString());
 
         profilePicButton = (ImageButton)rootView.findViewById(R.id.profilePicButton);
         profilePicButton.setOnClickListener(new View.OnClickListener() {
@@ -74,7 +76,7 @@ public class TabProfileFragment extends Fragment{
         Context c  = getActivity().getApplicationContext();
         RequestQueue queue = Volley.newRequestQueue(c);
         JsonObjectRequest j = new JsonObjectRequest(
-                Request.Method.GET, "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/users/" + emailString, null,
+                Request.Method.GET, "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/users/" + email, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
