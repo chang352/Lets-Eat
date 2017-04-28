@@ -1,9 +1,11 @@
+package cs307spring17team26.lets_eat_;
+
 import java.security.SecureRandom;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.SecretKeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import javax.xml.bind.DatatypeConverter;
+import android.util.Base64;
 
 // This implementation was heavily inspired by https://github.com/defuse/password-hashing/blob/master/PasswordStorage.java
 // It is a standard implementation of PBKDF2 with SHA1 as the underlying hash function
@@ -31,16 +33,16 @@ public class PassHash {
     //         } catch (InvalidHashException e) {
     //             throw new InvalidHashException("Couldn't create hash of password or verify passworkd", e);
     //         }
-            
+
     //     } else {
     //         System.out.println("Please use a single argument");
     //         return;
     //     }
     // }
-    
+
     @SuppressWarnings("serial")
     public static class InvalidHashException extends Exception {
-        
+
         public InvalidHashException(String message) {
             super(message);
         }
@@ -48,7 +50,7 @@ public class PassHash {
             super(message, source);
         }
     }
-    
+
     @SuppressWarnings("serial")
     public static class CannotPerformOperationException extends Exception {
         public CannotPerformOperationException(String message) {
@@ -58,13 +60,13 @@ public class PassHash {
             super(message, source);
         }
     }
-    
+
     public static final String PBKDF2_ALGORITHM = "PBKDF2WithHmacSHA1";
-    
+
     public static final int SALT_BYTE_SIZE = 24;
     public static final int HASH_BYTE_SIZE = 18;
     public static final int PBKDF2_ITERATIONS = 64000;
-    
+
     public static final int HASH_SECTIONS = 5;
     public static final int HASH_ALGORITHM_INDEX = 0;
     public static final int ITERATION_INDEX = 1;
@@ -170,10 +172,10 @@ public class PassHash {
     }
 
     private static byte[] fromBase64(String hex) throws IllegalArgumentException {
-        return DatatypeConverter.parseBase64Binary(hex);
+        return Base64.decode(hex, Base64.DEFAULT);
     }
 
     private static String toBase64(byte[] array) {
-        return DatatypeConverter.printBase64Binary(array);
+        return Base64.encodeToString(array, Base64.DEFAULT);
     }
 }
