@@ -82,7 +82,9 @@ public class ProfileMatches extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //code for to chat with match
-                Intent intent = new Intent(ProfileMatches.this, ChatActivity.class);
+                Intent intent = new Intent(ProfileMatches.this, TestActivity.class);
+                intent.putExtra("emailUser", email);
+                intent.putExtra("emailMatch", emailMatch);
                 startActivity(intent);
             }
         });
