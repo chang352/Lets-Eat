@@ -1,4 +1,4 @@
-package com.example.android.testchat;
+package cs307spring17team26.lets_eat_;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -27,12 +27,13 @@ public class Notification {
 
     final private static String url = "http://ec2-52-24-61-118.us-west-2.compute.amazonaws.com/users/";
 
-    private static void sendChatNotification(Context c) {
+    private static void sendChatNotification(Context c, String email) {
         int m = (int) System.currentTimeMillis();
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(c).setSmallIcon(R.drawable.sendbutton).setContentTitle("Let's Eat Notification").setContentText("You have a new chat notification!");
-        Intent resultIntent = new Intent(c, TestActivity.class);
+        Intent resultIntent = new Intent(c, ApplicationActivity.class);
+        resultIntent.putExtra("email", email);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(c);
-        stackBuilder.addParentStack(TestActivity.class);
+        stackBuilder.addParentStack(ApplicationActivity.class);
         stackBuilder.addNextIntent(resultIntent);
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(m, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentIntent(resultPendingIntent);
@@ -40,12 +41,13 @@ public class Notification {
         mNotificationManager.notify(m, mBuilder.build());
     }
 
-    private static void sendMeetingNotification(Context c) {
+    private static void sendMeetingNotification(Context c, String email) {
         int m = (int) System.currentTimeMillis();
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(c).setSmallIcon(R.drawable.sendbutton).setContentTitle("Let's Eat Notification").setContentText("You have a new meeting request!");
-        Intent resultIntent = new Intent(c, TestActivity.class);
+        Intent resultIntent = new Intent(c, ApplicationActivity.class);
+        resultIntent.putExtra("email", email);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(c);
-        stackBuilder.addParentStack(TestActivity.class);
+        stackBuilder.addParentStack(ApplicationActivity.class);
         stackBuilder.addNextIntent(resultIntent);
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(m, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentIntent(resultPendingIntent);
@@ -53,12 +55,13 @@ public class Notification {
         mNotificationManager.notify(m, mBuilder.build());
     }
 
-    private static void sendMatchNotification(Context c) {
+    private static void sendMatchNotification(Context c, String email) {
         int m = (int) System.currentTimeMillis();
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(c).setSmallIcon(R.drawable.sendbutton).setContentTitle("Let's Eat Notification").setContentText("You have a new match request!");
-        Intent resultIntent = new Intent(c, TestActivity.class);
+        Intent resultIntent = new Intent(c, ApplicationActivity.class);
+        resultIntent.putExtra("email", email);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(c);
-        stackBuilder.addParentStack(TestActivity.class);
+        stackBuilder.addParentStack(ApplicationActivity.class);
         stackBuilder.addNextIntent(resultIntent);
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(m, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentIntent(resultPendingIntent);
@@ -73,15 +76,15 @@ public class Notification {
             public void onResponse(JSONObject response) {
                 try {
                     if (response.getInt("chatNotification") != 0) {
-                        sendChatNotification(c);
+                        sendChatNotification(c, email);
                         postNum(c, email, 0, "chatNotification");
                     }
                     if (response.getInt("meetingNotification") != 0) {
-                        sendMeetingNotification(c);
+                        sendMeetingNotification(c, email);
                         postNum(c, email, 0, "meetingNotification");
                     }
                     if (response.getInt("matchNotification") != 0) {
-                        sendMatchNotification(c);
+                        sendMatchNotification(c, email);
                         postNum(c, email, 0, "matchNotification");
                     }
                 } catch (JSONException e) {
