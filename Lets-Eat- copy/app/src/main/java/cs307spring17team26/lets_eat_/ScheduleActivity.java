@@ -68,6 +68,7 @@ public class ScheduleActivity extends AppCompatActivity {
                     user2.replace(".", "_");
                 }
                 sendMeeting(user1, user2, editText.getText().toString(), timeToString(timePicker.getHour(), timePicker.getMinute(), datePicker.getDayOfMonth(), datePicker.getMonth(), datePicker.getYear()), 0, getApplication());
+                Notification.postNum(getApplication(), user2.replace("_", "."), 1, "meetingNotification");
             }
         });
 
