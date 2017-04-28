@@ -139,7 +139,6 @@ public class LoginAccountActivity extends AppCompatActivity implements LoaderCal
         forgotPasswordTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
             }
         });*/
 
